@@ -1,0 +1,28 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:core="http://www.porua.org/core" xmlns:http="http://www.porua.org/http"
+	xmlns:db="http://www.porua.org/db" xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       https://www.springframework.org/beans/spring-beans-4.0.xsd
+       http://www.porua.org/http
+       http://www.porua.org/http/http.xsd
+       http://www.porua.org/core
+       http://www.porua.org/core/core.xsd
+       http://www.porua.org/db
+       http://www.porua.org/db/db.xsd">
+
+
+	<http:listener-config name="http-config-app-1" method="GET"
+		host="localhost" port="8080" path="/app1" />
+
+	<db:db-config name="h2-config" url="jdbc:h2:~/test"
+		driverClass="org.h2.Driver" />
+
+	<core:porua-flow id="flow-app-1">
+		<http:listener config-ref="http-config-app-1" path="/" />
+		<core:set-payload file="json/input.json" />
+		<core:json-to-java />
+	</core:porua-flow>
+	
+</beans>

@@ -1,0 +1,18 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:core="http://www.porua.org/core" xmlns:http="http://www.porua.org/http"
+	xmlns:db="http://www.porua.org/db" xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       https://www.springframework.org/beans/spring-beans-4.0.xsd
+       http://www.porua.org/http
+       http://www.porua.org/http/http.xsd
+       http://www.porua.org/core
+       http://www.porua.org/core/core.xsd
+       http://www.porua.org/db
+       http://www.porua.org/db/db.xsd">
+
+	<bean id="one" class="com.anupam.app.SingletonBean" scope="singleton" lazy-init="true" />
+
+
+</beans>

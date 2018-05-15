@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:tns="http://www.porua.org/http" targetNamespace="http://www.porua.org/http"
+	elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema">
+
+	<import namespace="http://www.springframework.org/schema/beans" />
+
+	<!-- Listener -->
+	<element name="listener" type="tns:listenerType" />
+	<element name="listener-config" type="tns:httpServerConfigType" />
+
+	<complexType name="listenerType">
+		<attribute name="path" type="string" />
+		<attribute name="config-ref" type="string" use="required" />
+	</complexType>
+
+	<!-- Requester -->
+	<element name="requester" type="tns:requesterType" />
+	<element name="requester-config" type="tns:httpServerConfigType" />
+
+	<complexType name="requesterType">
+		<attribute name="path" type="string" />
+		<attribute name="config-ref" type="string" use="required" />
+	</complexType>
+
+	<!-- Common Types -->
+	<simpleType name="httpMethodType">
+		<restriction base="string">
+			<enumeration value="GET" />
+			<enumeration value="POST" />
+			<enumeration value="PUT" />
+			<enumeration value="DELETE" />
+		</restriction>
+	</simpleType>
+
+	<complexType name="httpServerConfigType">
+		<attribute name="name" type="string" use="required" />
+		<attribute name="method" type="tns:httpMethodType" use="required" />
+		<attribute name="host" type="string" use="required" />
+		<attribute name="port" type="int" use="required" />
+		<attribute name="path" type="string" use="required" />
+	</complexType>
+</schema>

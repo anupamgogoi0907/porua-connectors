@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="porua-container" />
+        <module name="porua-core" />
+        <module name="porua-db" />
+        <module name="porua-http" />
+        <module name="porua-jms" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="porua" target="1.8" />
+      <module name="porua-container" target="1.8" />
+      <module name="porua-core" target="1.8" />
+      <module name="porua-db" target="1.8" />
+      <module name="porua-http" target="1.8" />
+      <module name="porua-jms" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

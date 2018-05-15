@@ -1,0 +1,15 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:core="http://www.porua.org/core" xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       https://www.springframework.org/beans/spring-beans-4.0.xsd
+       http://www.porua.org/core
+       http://www.porua.org/core/core.xsd">
+	<core:porua-flow id="helloFlow">
+		<core:set-variable name="myVar" value="10"/>
+		<core:set-payload file="test"/>
+		<core:json-to-java mimeType="java" />
+		<core:json-to-xml mimeType="xml" />
+	</core:porua-flow>
+</beans>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:tns="http://www.porua.org/core" xmlns:beans="http://www.springframework.org/schema/beans"
+	targetNamespace="http://www.porua.org/core" elementFormDefault="qualified"
+	xmlns="http://www.w3.org/2001/XMLSchema">
+
+	<import namespace="http://www.springframework.org/schema/beans" />
+
+	<!-- Processors -->
+	<element name="json-to-xml" type="tns:mimeType" />
+	<element name="json-to-java" type="tns:mimeType" />
+	<element name="java-component" type="tns:javaComponentType" />
+	<element name="set-variable" type="tns:setVariableType" />
+	<element name="set-payload" type="tns:setPayloadType" />
+	<element name="file-connector" type="tns:fileConnectorType" />
+
+	<!-- Types -->
+	<complexType name="mimeType">
+		<attribute name="mimeType" type="string" />
+	</complexType>
+
+
+
+	<complexType name="javaComponentType">
+		<attribute name="class" use="required" />
+	</complexType>
+
+	<complexType name="setVariableType">
+		<attribute name="name" type="string" use="required" />
+		<attribute name="value" use="required" />
+	</complexType>
+
+	<complexType name="setPayloadType">
+		<attribute name="payload" type="string" />
+		<attribute name="file" type="string" />
+	</complexType>
+
+	<complexType name="fileConnectorType">
+		<attribute name="operation" type="tns:fileOperationType"
+			use="required" />
+		<attribute name="file" type="string" use="required" />
+	</complexType>
+	<simpleType name="fileOperationType">
+		<restriction base="string">
+			<enumeration value="READ" />
+			<enumeration value="WRITE" />
+		</restriction>
+	</simpleType>
+
+</schema>

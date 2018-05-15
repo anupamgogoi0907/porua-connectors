@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:tns="http://www.porua.org/jms" targetNamespace="http://www.porua.org/jms"
+	elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema">
+
+	<import namespace="http://www.springframework.org/schema/beans" />
+
+	<element name="listener" type="tns:listenerType" />
+	<complexType name="listenerType">
+		<attribute name="url" type="string" use="required" />
+		<attribute name="subject" type="string" use="required"/>
+	</complexType>
+</schema>

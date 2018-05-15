@@ -1,0 +1,22 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:core="http://www.porua.org/core" xmlns:http="http://www.porua.org/http"
+	   xmlns:jms="http://www.porua.org/jms"
+	xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       https://www.springframework.org/beans/spring-beans-4.0.xsd
+       http://www.porua.org/http
+       http://www.porua.org/http/http.xsd
+       http://www.porua.org/core
+       http://www.porua.org/core/core.xsd
+	   http://www.porua.org/jms
+       http://www.porua.org/jms/jms.xsd">
+
+
+	<core:porua-flow id="testFlow">
+		<jms:listener url="tcp://localhost:61616" subject="TEST"/>
+		<core:json-to-xml mimeType="xml" />
+		<core:json-to-java mimeType="java" />
+	</core:porua-flow>
+</beans>
