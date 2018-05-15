@@ -12,7 +12,7 @@
        http://www.porua.org/db
        http://www.porua.org/db/db.xsd">
 
-	<bean id="one" class="com.anupam.app.SingletonBean" scope="singleton" lazy-init="true" />
+	<bean id="one" class="com.porua.app.SingletonBean" scope="singleton" lazy-init="true" />
 
 
 </beans>

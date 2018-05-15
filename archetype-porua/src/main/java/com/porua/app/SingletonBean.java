@@ -1,4 +1,4 @@
-package com.anupam.app;
+package com.porua.app;
 
 public class SingletonBean {
 
