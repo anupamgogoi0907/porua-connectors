@@ -6,8 +6,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 
+import org.eclipse.core.internal.resources.Folder;
+import org.eclipse.core.internal.resources.Project;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -58,16 +61,52 @@ public class PoruaNewXMLWizard extends Wizard implements INewWizard {
 	/**
 	 * Adding the page to the wizard.
 	 */
-	
+	private String APP_FOLDER = "/src/main/app";
+
 	@Override
 	public void addPages() {
-		Object project = ((IStructuredSelection) selection).getFirstElement();
-		if (project instanceof JavaProject) {
-			this.targetFolder = ((JavaProject) project).getPath().toString();
-			page = new PoruaNewXMLWizardPage();
-			addPage(page);
-		} else {
-			// TODO
+		try {
+			Object obj = ((IStructuredSelection) selection).getFirstElement();
+			if (obj != null) {
+				IFolder folder = null;
+				if (obj instanceof Project) {
+					Project project = (Project) obj;
+					folder = project.getFolder(APP_FOLDER);
+				} else if (obj instanceof JavaProject) {
+					JavaProject javaProject = (JavaProject) obj;
+					folder = javaProject.getProject().getFolder(APP_FOLDER);
+
+				} else if (obj instanceof Folder) {
+					Folder f = (Folder) obj;
+					folder = f.getProject().getFolder(f.getProjectRelativePath());
+					if (!folder.getFullPath().toString().contains(APP_FOLDER)) {
+						folder = null;
+					}
+				}
+				if (folder != null) {
+					prepare(folder);
+					targetFolder = folder.getFullPath().toString();
+					page = new PoruaNewXMLWizardPage();
+					addPage(page);
+				} else {
+					// TODO
+				}
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void prepare(IFolder folder) {
+		try {
+			if (!folder.exists()) {
+				prepare((IFolder) folder.getParent());
+				folder.create(false, false, null);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 	}
