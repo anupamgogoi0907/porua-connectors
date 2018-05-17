@@ -28,6 +28,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.URIUtil;
 import org.eclipse.swt.graphics.ImageData;
 import org.osgi.framework.Bundle;
 import org.w3c.dom.Document;
@@ -99,7 +100,9 @@ public class PluginUtility {
 		try {
 			Bundle bundle = Platform.getBundle(Activator.PLUGIN_ID);
 			URL fileURL = bundle.getEntry(filePath);
-			file = new File(FileLocator.resolve(fileURL).toURI());
+			fileURL=FileLocator.toFileURL(fileURL);
+			file = URIUtil.toFile(URIUtil.toURI(fileURL));
+			System.out.println(file.getAbsolutePath());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
