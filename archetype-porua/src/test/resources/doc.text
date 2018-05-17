@@ -1,7 +1,0 @@
-mvn archetype:create-from-project
-* Use it
-mvn -B archetype:generate \
-  -DarchetypeGroupId=ARCHETYPE_GROUP_ID \
-  -DarchetypeArtifactId=ARCHETYPE_ARTIFACT_ID
-  -DgroupId=com.mycompany.app \
-  -DartifactId=my-app

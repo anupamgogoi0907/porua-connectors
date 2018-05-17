@@ -1,9 +1,0 @@
-{
-	"name":"anupamm",
-	"age":32,
-	"email": "agogoi@avenuecode.com",
-	"phone":{
-		"ddd":"11",
-		"number":"121212121212"
-	}
-}
