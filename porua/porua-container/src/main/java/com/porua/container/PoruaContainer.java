@@ -36,7 +36,34 @@ public class PoruaContainer {
 		loadSingleApp(jarApp.toURI().toURL(), listConfigXml.toArray(new String[listConfigXml.size()]));
 	}
 
-	public static List<String> extractJar(File jarApp, Path appDirPath) throws Exception {
+	public static void scanAllApps() throws Exception {
+		File[] listApp = new File(PORUA_APPS).listFiles();
+		for (File appFolder : listApp) {
+			if (appFolder.isDirectory()) {
+				scanSingleApp(appFolder);
+			}
+		}
+	}
+
+	private static void loadSingleApp(URL jarUrl, String... app) {
+		FileSystemXmlApplicationContext ctx = null;
+		try {
+			ctx = new FileSystemXmlApplicationContext(app);
+			Map<String, Flow> mapFlow = ctx.getBeansOfType(Flow.class);
+			for (String key : mapFlow.keySet()) {
+				Flow flow = mapFlow.get(key);
+				flow.addPoruaClassLoader(jarUrl);
+				flow.startFlow();
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			ctx.close();
+		}
+	}
+
+	private static List<String> extractJar(File jarApp, Path appDirPath) throws Exception {
 		List<String> listConfigXml = new ArrayList<>();
 		JarFile jarFile = new JarFile(jarApp);
 		Enumeration<JarEntry> en = jarFile.entries();
@@ -53,32 +80,5 @@ public class PoruaContainer {
 		}
 		jarFile.close();
 		return listConfigXml;
-	}
-
-	public static void scanAllApps() throws Exception {
-		File[] listApp = new File(PORUA_APPS).listFiles();
-		for (File appFolder : listApp) {
-			if (appFolder.isDirectory()) {
-				scanSingleApp(appFolder);
-			}
-		}
-	}
-
-	public static void loadSingleApp(URL jarUrl, String... app) {
-		FileSystemXmlApplicationContext ctx = null;
-		try {
-			ctx = new FileSystemXmlApplicationContext(app);
-			Map<String, Flow> mapFlow = ctx.getBeansOfType(Flow.class);
-			for (String key : mapFlow.keySet()) {
-				Flow flow = mapFlow.get(key);
-				flow.addPoruaClassLoader(jarUrl);
-				flow.startFlow();
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			ctx.close();
-		}
 	}
 }
