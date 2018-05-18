@@ -2,40 +2,57 @@ package com.porua.container;
 
 import java.io.File;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import com.porua.core.flow.Flow;
 
 public class PoruaContainer {
-	public static String PORUA_APPS;
+	public static String PORUA_APPS = "apps/";
 
 	public static void main(String[] args) throws Exception {
 		if (args.length != 0) {
 			PORUA_APPS = args[0];
 		} else {
-			PORUA_APPS = "apps";
+			PORUA_APPS = "apps/";
 		}
 		scanAllApps();
-		// AppTask.loadSingleApp("classpath:my-flow-jms.xml", null);
 	}
 
-	public static void scanSingleApp(File appFolder) throws Exception {
-		URL jarUrl = null;
+	public static void scanSingleApp(File jarApp) throws Exception {
+		String appDir = PORUA_APPS + jarApp.getName().substring(0, jarApp.getName().length() - ".jar".length()) + "/";
+		Path appDirPath = Paths.get(appDir);
+		Files.createDirectories(Paths.get(appDir));
+		List<String> listConfigXml = extractJar(jarApp, appDirPath);
+		loadSingleApp(jarApp.toURI().toURL(), listConfigXml.toArray(new String[listConfigXml.size()]));
+	}
+
+	public static List<String> extractJar(File jarApp, Path appDirPath) throws Exception {
 		List<String> listConfigXml = new ArrayList<>();
-		File[] appContents = appFolder.listFiles();
-		for (File content : appContents) {
-			if (content.getName().endsWith(".jar")) {
-				jarUrl = content.toURI().toURL();
-				System.out.println("Loading: " + jarUrl);
-			} else if (content.getName().endsWith(".xml")) {
-				listConfigXml.add("file:".concat(content.getAbsolutePath()));
+		JarFile jarFile = new JarFile(jarApp);
+		Enumeration<JarEntry> en = jarFile.entries();
+		while (en.hasMoreElements()) {
+			JarEntry entry = en.nextElement();
+			if (!entry.getName().contains("/") && entry.getName().endsWith(".xml")) {
+				Path path = appDirPath.resolve(entry.getName());
+				if (path.toFile().exists()) {
+					Files.delete(path);
+				}
+				Files.copy(jarFile.getInputStream(entry), path);
+				listConfigXml.add("file:".concat(path.toFile().getAbsolutePath()));
 			}
 		}
-		loadSingleApp(jarUrl, listConfigXml.toArray(new String[listConfigXml.size()]));
+		jarFile.close();
+		return listConfigXml;
 	}
 
 	public static void scanAllApps() throws Exception {
