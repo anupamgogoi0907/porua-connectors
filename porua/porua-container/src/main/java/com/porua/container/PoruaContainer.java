@@ -17,13 +17,11 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 import com.porua.core.flow.Flow;
 
 public class PoruaContainer {
-	public static String PORUA_APPS = "apps/";
+	public static String PORUA_APPS = "app/";
 
 	public static void main(String[] args) throws Exception {
 		if (args.length != 0) {
 			PORUA_APPS = args[0];
-		} else {
-			PORUA_APPS = "apps/";
 		}
 		scanAllApps();
 	}
