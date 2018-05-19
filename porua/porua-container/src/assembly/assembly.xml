@@ -16,8 +16,16 @@
 			</includes>
 		</fileSet>
 		<fileSet>
-			<directory>${project.build.directory}/libs</directory>
-			<outputDirectory>/libs</outputDirectory>
+			<directory>${project.build.directory}/lib</directory>
+			<outputDirectory>/lib</outputDirectory>
+			<includes>
+				<include>*.jar</include>
+			</includes>
+		</fileSet>
+		<!-- Create a dummy folder inside the zip -->
+		<fileSet>
+			<directory>${project.build.directory}</directory>
+			<outputDirectory>/plugin</outputDirectory>
 			<includes>
 				<include>*.jar</include>
 			</includes>
