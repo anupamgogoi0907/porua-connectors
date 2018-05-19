@@ -22,12 +22,20 @@
 				<include>*.jar</include>
 			</includes>
 		</fileSet>
-		<!-- Create a dummy folder inside the zip -->
+		<!-- Create plugin folder with dummy content -->
 		<fileSet>
 			<directory>${project.build.directory}</directory>
 			<outputDirectory>/plugin</outputDirectory>
 			<includes>
 				<include>*.jar</include>
+			</includes>
+		</fileSet>
+		<!-- Create app folder with dummy content -->
+		<fileSet>
+			<directory>${project.basedir}/src/test/resources</directory>
+			<outputDirectory>/app</outputDirectory>
+			<includes>
+				<include>*.xml</include>
 			</includes>
 		</fileSet>
 	</fileSets>
