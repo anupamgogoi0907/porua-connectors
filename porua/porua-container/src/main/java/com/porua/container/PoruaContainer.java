@@ -17,11 +17,13 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 import com.porua.core.flow.Flow;
 
 public class PoruaContainer {
-	public static String PORUA_APPS = "app/";
+	public static String PORUA_APPS = "";
 
 	public static void main(String[] args) throws Exception {
 		if (args.length != 0) {
 			PORUA_APPS = args[0];
+		} else {
+			PORUA_APPS = "app/";
 		}
 		scanAllApps();
 	}
@@ -38,6 +40,7 @@ public class PoruaContainer {
 	}
 
 	public static void scanSingleApp(File jarApp) throws Exception {
+		PORUA_APPS = (PORUA_APPS.equals("") ? "target/" : PORUA_APPS);
 		String appDir = PORUA_APPS + jarApp.getName().substring(0, jarApp.getName().length() - ".jar".length()) + "/";
 		Path appDirPath = Paths.get(appDir);
 		Files.createDirectories(Paths.get(appDir));
