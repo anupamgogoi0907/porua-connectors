@@ -26,6 +26,17 @@ public class PoruaContainer {
 		scanAllApps();
 	}
 
+	public static void scanSingleApp() throws Exception {
+		File[] files = new File(".").listFiles();
+		for (File file : files) {
+			if (!file.isDirectory() && file.getName().endsWith(".jar")) {
+				scanSingleApp(file);
+				break;
+			}
+		}
+
+	}
+
 	public static void scanSingleApp(File jarApp) throws Exception {
 		String appDir = PORUA_APPS + jarApp.getName().substring(0, jarApp.getName().length() - ".jar".length()) + "/";
 		Path appDirPath = Paths.get(appDir);
