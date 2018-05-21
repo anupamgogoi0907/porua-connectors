@@ -36,7 +36,7 @@ public abstract class MessageProcessor implements ApplicationContextAware {
 				System.out.println("Finished processing on " + Thread.currentThread().getName() + ", Result:\n " + getPoruaContext().getPayload());
 				if (this.poruaContext.getResponder() instanceof Response) {
 					Response response = (Response) this.poruaContext.getResponder();
-					response.getWriter().write("Completed");
+					response.getWriter().write(this.poruaContext.getPayload().toString());
 				}
 			} else {
 				MessageProcessor nextProcessor = this.poruaContext.getProcessors().remove();
