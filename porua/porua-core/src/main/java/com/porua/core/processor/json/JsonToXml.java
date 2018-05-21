@@ -2,12 +2,7 @@ package com.porua.core.processor.json;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringWriter;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.XMLWriter;
 import org.json.JSONObject;
 import org.json.XML;
 
@@ -57,16 +52,17 @@ public class JsonToXml extends MessageProcessor {
 
 	}
 
-	private String convertAndFormat(String payload) throws Exception {
+	public String convertAndFormat(String payload) throws Exception {
 		JSONObject jsonObject = new JSONObject(payload);
 		String xml = XML.toString(jsonObject);
-		Document doc = DocumentHelper.parseText(xml);
-		StringWriter sw = new StringWriter();
-		OutputFormat format = OutputFormat.createPrettyPrint();
-		XMLWriter xw = new XMLWriter(sw, format);
-		xw.write(doc);
-		String result = sw.toString();
-		return result;
+//		Document doc = DocumentHelper.parseText(xml);
+//		StringWriter sw = new StringWriter();
+//		OutputFormat format = OutputFormat.createPrettyPrint();
+//		XMLWriter xw = new XMLWriter(sw, format);
+//		xw.write(doc);
+//		String result = sw.toString();
+//		return result;
+		return xml;
 	}
 
 	public String getMimeType() {
