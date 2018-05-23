@@ -40,7 +40,7 @@ public class PoruaContainer {
 	}
 
 	public static void scanSingleApp(File jarApp) throws Exception {
-		PORUA_APPS = (PORUA_APPS.equals("") ? "target/" : PORUA_APPS);
+		PORUA_APPS = (PORUA_APPS.equals("") ? "" : PORUA_APPS);
 		String appDir = PORUA_APPS + jarApp.getName().substring(0, jarApp.getName().length() - ".jar".length()) + "/";
 		Path appDirPath = Paths.get(appDir);
 		Files.createDirectories(Paths.get(appDir));
@@ -50,9 +50,11 @@ public class PoruaContainer {
 
 	public static void scanAllApps() throws Exception {
 		File[] listApp = new File(PORUA_APPS).listFiles();
-		for (File appFolder : listApp) {
-			if (appFolder.isDirectory()) {
-				scanSingleApp(appFolder);
+		if (listApp != null && listApp.length != 0) {
+			for (File jarApp : listApp) {
+				if (!jarApp.isDirectory() && jarApp.getName().endsWith(".jar")) {
+					scanSingleApp(jarApp);
+				}
 			}
 		}
 	}

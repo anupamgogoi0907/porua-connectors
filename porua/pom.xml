@@ -18,6 +18,7 @@
 
 	<properties>
 		<spring.version>LATEST</spring.version>
+		<porua.esb.name>porua-esb</porua.esb.name>
 	</properties>
 
 	<dependencies>
