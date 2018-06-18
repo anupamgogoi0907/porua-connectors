@@ -1,0 +1,16 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:db="http://www.porua.org/db"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       https://www.springframework.org/beans/spring-beans-4.0.xsd
+       http://www.porua.org/db
+       http://www.porua.org/db/db.xsd">
+
+     <db:db-config name="h2-config" url="jdbc:h2:~/test" driverClass="org.h2.Driver"/>
+
+     <db:db-connector config-ref="h2-config" query="select * from users where id=mapVariable.id"/>
+
+
+</beans>

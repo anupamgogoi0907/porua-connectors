@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.porua.org/db" targetNamespace="http://www.porua.org/db" version="1.0">
+<xs:element name="db-config" type="tns:poruaDatabaseConfigurationJaxb"/>
+<xs:element name="db-connector" type="tns:poruaDatabaseConnectorJaxb"/>
+<xs:complexType name="poruaDatabaseConfigurationJaxb">
+<xs:sequence/>
+<xs:attribute name="name" type="xs:string"/>
+<xs:attribute name="url" type="xs:string"/>
+<xs:attribute name="driverClass" type="xs:string"/>
+<xs:attribute name="login" type="xs:string"/>
+<xs:attribute name="password" type="xs:string"/>
+</xs:complexType>
+<xs:complexType name="poruaDatabaseConnectorJaxb">
+<xs:sequence/>
+<xs:attribute name="query" type="xs:string"/>
+<xs:attribute name="config-ref" type="xs:string"/>
+</xs:complexType>
+</xs:schema>

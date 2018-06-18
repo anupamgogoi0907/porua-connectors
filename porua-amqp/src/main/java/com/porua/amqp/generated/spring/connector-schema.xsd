@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://www.porua.org/jms"
+	targetNamespace="http://www.porua.org/jms" version="1.0">
+	<xs:element name="jms-config"
+		type="tns:simpleJmsServerConfigurationJaxb" />
+	<xs:element name="listener" type="tns:simpleJmsServerJaxb" />
+	<xs:complexType name="simpleJmsServerJaxb">
+		<xs:sequence />
+		<xs:attribute name="exchange" type="xs:string" />
+		<xs:attribute name="exchangetype" type="tns:exchangetype" />
+		<xs:attribute name="queue" type="xs:string" />
+		<xs:attribute name="durable" type="tns:durable" />
+		<xs:attribute name="routekey" type="xs:string" />
+		<xs:attribute name="config-ref" type="xs:string" />
+	</xs:complexType>
+	<xs:complexType name="simpleJmsServerConfigurationJaxb">
+		<xs:sequence />
+		<xs:attribute name="name" type="xs:string" />
+		<xs:attribute name="login" type="xs:string" />
+		<xs:attribute name="password" type="xs:string" />
+		<xs:attribute name="vhost" type="xs:string" />
+		<xs:attribute name="host" type="xs:string" />
+		<xs:attribute name="port" type="xs:int" />
+	</xs:complexType>
+	<xs:simpleType name="exchangetype">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DIRECT" />
+			<xs:enumeration value="TOPIC" />
+			<xs:enumeration value="FANOUT" />
+			<xs:enumeration value="HEADERS" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="durable">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TRUE" />
+			<xs:enumeration value="FALSE" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

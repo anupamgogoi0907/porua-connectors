@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:ns1="http://www.porua.org/core"
+	xmlns:ns2="http://www.porua.org/components"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans        
+	https://www.springframework.org/beans/spring-beans-4.0.xsd 
+	http://www.porua.org/core 
+	http://www.porua.org/core/core.xsd 
+	http://www.porua.org/components 
+	http://www.porua.org/components/components.xsd">
+
+
+	<ns1:porua-flow id="flow-25">
+		<ns2:set-payload payload="Hello World" />
+	</ns1:porua-flow>
+
+</beans>

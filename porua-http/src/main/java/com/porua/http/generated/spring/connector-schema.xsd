@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.porua.org/http" targetNamespace="http://www.porua.org/http" version="1.0">
+<xs:element name="listener" type="tns:simpleHttpServerJaxb"/>
+<xs:element name="listener-config" type="tns:simpleHttpServerConfigurationJaxb"/>
+<xs:complexType name="simpleHttpServerConfigurationJaxb">
+<xs:sequence/>
+<xs:attribute name="name" type="xs:string"/>
+<xs:attribute name="method" type="tns:methods"/>
+<xs:attribute name="host" type="xs:string"/>
+<xs:attribute name="port" type="xs:int" use="required"/>
+<xs:attribute name="path" type="xs:string"/>
+</xs:complexType>
+<xs:complexType name="simpleHttpServerJaxb">
+<xs:sequence/>
+<xs:attribute name="path" type="xs:string"/>
+<xs:attribute name="config-ref" type="xs:string"/>
+</xs:complexType>
+<xs:simpleType name="methods">
+<xs:restriction base="xs:string">
+<xs:enumeration value="GET"/>
+<xs:enumeration value="POST"/>
+<xs:enumeration value="PUT"/>
+<xs:enumeration value="DELETE"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:schema>

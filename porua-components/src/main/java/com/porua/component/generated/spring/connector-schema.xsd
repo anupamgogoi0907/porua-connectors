@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://www.porua.org/components"
+	targetNamespace="http://www.porua.org/components" version="1.0">
+	<xs:element name="file-connector"
+		type="tns:poruaFileConnectorJaxb" />
+	<xs:element name="java-component"
+		type="tns:javaComponentJaxb" />
+	<xs:element name="json-to-java" type="tns:jsonToJavaJaxb" />
+	<xs:element name="json-to-xml" type="tns:jsonToXmlJaxb" />
+	<xs:element name="set-payload" type="tns:payloadSetterJaxb" />
+	<xs:element name="set-variable"
+		type="tns:variableSetterJaxb" />
+	<xs:complexType name="javaComponentJaxb">
+		<xs:sequence />
+		<xs:attribute name="className" type="xs:string" />
+	</xs:complexType>
+	<xs:complexType name="jsonToJavaJaxb">
+		<xs:sequence />
+	</xs:complexType>
+	<xs:complexType name="variableSetterJaxb">
+		<xs:sequence />
+		<xs:attribute name="name" type="xs:string" />
+		<xs:attribute name="value" type="xs:string" />
+	</xs:complexType>
+	<xs:complexType name="poruaFileConnectorJaxb">
+		<xs:sequence />
+		<xs:attribute name="file" type="xs:string" />
+		<xs:attribute name="operation" type="tns:operations" />
+	</xs:complexType>
+	<xs:complexType name="payloadSetterJaxb">
+		<xs:sequence />
+		<xs:attribute name="payload" type="xs:string" />
+		<xs:attribute name="file" type="xs:string" />
+	</xs:complexType>
+	<xs:complexType name="jsonToXmlJaxb">
+		<xs:sequence />
+	</xs:complexType>
+	<xs:simpleType name="operations">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="READ" />
+			<xs:enumeration value="WRITE" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

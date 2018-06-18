@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:ns3="http://www.porua.org/jms"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans        
+	https://www.springframework.org/beans/spring-beans-4.0.xsd 
+	http://www.porua.org/jms 
+	http://www.porua.org/jms/jms.xsd">
+	<ns3:listener config-ref="JMS_Test" durable="TRUE"
+		exchange="my-direct-exchange" exchangetype="DIRECT" queue="TEST"
+		routekey="1" />
+
+	<ns3:jms-config host="orangutan.rmq.cloudamqp.com"
+		login="tuzlghcm" name="JMS_Test"
+		password="14c_xDQ3rGv57AFaK2TmBD-TNy9YLpSI" vhost="tuzlghcm" />
+</beans>
