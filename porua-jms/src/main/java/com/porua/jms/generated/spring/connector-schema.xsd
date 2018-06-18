@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.porua.org/jms" targetNamespace="http://www.porua.org/jms" version="1.0">
-<xs:element name="listener" type="tns:simpleJmsServerJaxb"/>
-<xs:complexType name="simpleJmsServerJaxb">
-<xs:sequence/>
-<xs:attribute name="url" type="xs:string"/>
-<xs:attribute name="subject" type="xs:string"/>
-</xs:complexType>
-</xs:schema>
