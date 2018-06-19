@@ -1,5 +1,6 @@
 package com.porua.http.server;
 
+import org.apache.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.server.NetworkListener;
 import org.glassfish.grizzly.threadpool.ThreadPoolConfig;
@@ -24,6 +25,8 @@ public class SimpleHttpServer extends MessageListener {
 	private SimpleHttpServerConfiguration config;
 
 	private HttpServer server;
+	
+	private Logger logger=Logger.getLogger(SimpleHttpServer.class);
 
 	/**
 	 * Starts the Http Listener.
