@@ -2,7 +2,8 @@ package com.porua.amqp.subscriber;
 
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.porua.core.flow.Flow;
 import com.porua.core.listener.MessageListener;
@@ -45,7 +46,7 @@ public class SimpleJmsServer extends MessageListener {
 	@ConnectorConfig(configName = "config-ref", tagName = "jms-config")
 	private SimpleJmsServerConfiguration config;
 
-	private Logger logger = Logger.getLogger(SimpleJmsServer.class);
+	private Logger logger = LogManager.getLogger(SimpleJmsServer.class);
 	private Connection conn = null;
 
 	@Override
