@@ -1,5 +1,8 @@
 package com.porua.component.variable;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.porua.core.PoruaConstants;
 import com.porua.core.processor.MessageProcessor;
 import com.porua.core.tag.ConfigProperty;
@@ -14,9 +17,12 @@ public class VariableSetter extends MessageProcessor {
 	@ConfigProperty
 	private String value; // Value is always set as String in XML configuration.
 
+	private static Logger logger = LogManager.getLogger(VariableSetter.class);
+
 	@Override
 	public void process() {
 		if (value != null) {
+			logger.info("Setting variable...");
 			value = parseValue(value);
 			super.poruaContext.getMapVariable().put(name, value);
 		}

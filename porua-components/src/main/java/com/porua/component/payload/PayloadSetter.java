@@ -2,6 +2,10 @@ package com.porua.component.payload;
 
 import java.io.InputStream;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.porua.component.variable.VariableSetter;
 import com.porua.core.PoruaConstants;
 import com.porua.core.context.PoruaClassLoader;
 import com.porua.core.processor.MessageProcessor;
@@ -17,8 +21,11 @@ public class PayloadSetter extends MessageProcessor {
 	@ConfigProperty
 	private String file;
 
+	private static Logger logger = LogManager.getLogger(VariableSetter.class);
+
 	@Override
 	public void process() {
+		logger.info("Setting payload: " + payload);
 		// Processing the file input gets high priority when both properties are filled.
 		if (file != null && !file.equals("")) {
 			PoruaClassLoader loader = super.springContext.getBean(PoruaClassLoader.class);
