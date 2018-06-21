@@ -1,3 +1,5 @@
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -11,7 +13,7 @@ public class TestDbConnector {
 	public void testConnector() {
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("db-test.xml");
 		PoruaDatabaseConnector connector = context.getBean(PoruaDatabaseConnector.class);
-//		connector.process();
+		assertNotNull(connector);
 		context.close();
 	}
 }

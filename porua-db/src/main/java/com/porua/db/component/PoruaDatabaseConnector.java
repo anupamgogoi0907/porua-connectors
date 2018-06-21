@@ -3,6 +3,9 @@ package com.porua.db.component;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.porua.core.context.PoruaClassLoader;
 import com.porua.core.processor.MessageProcessor;
 import com.porua.core.tag.ConfigProperty;
@@ -18,6 +21,8 @@ public class PoruaDatabaseConnector extends MessageProcessor {
 	@ConnectorConfig(configName = "config-ref", tagName = "db-config")
 	private PoruaDatabaseConfiguration config;
 
+	private static Logger logger = LogManager.getLogger(PoruaDatabaseConnector.class);
+
 	@Override
 	public void process() {
 		PoruaDataSource dataSource = null;
@@ -29,7 +34,7 @@ public class PoruaDatabaseConnector extends MessageProcessor {
 			dataSource = super.springContext.getBean(PoruaDataSource.class);
 			conn = dataSource.getConnection();
 			query = super.evaluateExpression(query);
-			System.out.println(query);
+			logger.info("Query processed: " + query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -48,6 +53,7 @@ public class PoruaDatabaseConnector extends MessageProcessor {
 	 * searched in Spring context.
 	 */
 	private void addDatasourceToSpringContext() {
+		logger.info("Adding datasource to spring context.");
 		PoruaClassLoader loader = super.springContext.getBean(PoruaClassLoader.class);
 		Object[] args = new Object[5];
 		args[0] = config.getUrl();
