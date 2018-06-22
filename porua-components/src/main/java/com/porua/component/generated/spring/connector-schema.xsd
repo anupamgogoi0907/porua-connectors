@@ -8,6 +8,7 @@
 		type="tns:javaComponentJaxb" />
 	<xs:element name="json-to-java" type="tns:jsonToJavaJaxb" />
 	<xs:element name="json-to-xml" type="tns:jsonToXmlJaxb" />
+	<xs:element name="porua-logger" type="tns:poruaLoggerJaxb" />
 	<xs:element name="set-payload" type="tns:payloadSetterJaxb" />
 	<xs:element name="set-variable"
 		type="tns:variableSetterJaxb" />
@@ -22,6 +23,9 @@
 		<xs:sequence />
 		<xs:attribute name="name" type="xs:string" />
 		<xs:attribute name="value" type="xs:string" />
+	</xs:complexType>
+	<xs:complexType name="poruaLoggerJaxb">
+		<xs:sequence />
 	</xs:complexType>
 	<xs:complexType name="poruaFileConnectorJaxb">
 		<xs:sequence />
