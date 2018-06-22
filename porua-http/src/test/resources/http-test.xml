@@ -12,5 +12,7 @@
 	<http:listener config-ref="myConfig" path="/hello" />
 	<http:listener-config name="myConfig" method="GET"
 		host="localhost" port="8080" path="/" />
+		
+	
 
 </beans>

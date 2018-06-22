@@ -64,6 +64,7 @@
 						<pkg>com.porua.http.generated</pkg>
 						<connectors>
 							<param>com.porua.http.server.SimpleHttpServer</param>
+							<param>com.porua.http.request.SimpleHttpRequester</param>
 						</connectors>
 					</configuration>
 				</plugin>

@@ -1,25 +1,31 @@
 package com.porua.http.request;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import com.porua.core.context.PoruaContext;
 import com.porua.core.processor.MessageProcessor;
+import com.porua.core.tag.ConfigProperty;
+import com.porua.core.tag.Connector;
+import com.porua.core.tag.ConnectorConfig;
 
-/**
- * Spring Bean. Populated by Spring.
- */
+@Connector(tagName = "requestor", tagNamespace = "http://www.porua.org/http", tagSchemaLocation = "http://www.porua.org/http/http.xsd", imageName = "http-requestor.png")
 public class SimpleHttpRequester extends MessageProcessor {
 
+	@ConfigProperty
+	private String path;
+	
+	@ConnectorConfig(configName = "config-ref", tagName = "requestor-config")
 	private SimpleHttpRequesterConfiguration config;
-	private ExecutorService es = Executors.newFixedThreadPool(2);
+
+	private static Logger logger = LogManager.getLogger(SimpleHttpRequester.class);
 
 	public SimpleHttpRequester() {
 	}
 
 	@Override
 	public void process() {
-		es.submit(new DataProcessor(getPoruaContext()));
+		logger.debug("Receiving request...");
+		super.process();
 	}
 
 	public SimpleHttpRequesterConfiguration getConfig() {
@@ -30,23 +36,12 @@ public class SimpleHttpRequester extends MessageProcessor {
 		this.config = config;
 	}
 
-	// Test 
-	public class DataProcessor extends MessageProcessor implements Runnable {
-		public DataProcessor(PoruaContext context) {
-			super.setPoruaContext(context);
-		}
-
-		public void run() {
-			try {
-				Thread.sleep(5000);
-				Integer num = (Integer) getPoruaContext().getPayload();
-				num = num + 1;
-				super.getPoruaContext().setPayload(num);
-				super.process();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
+	public String getPath() {
+		return path;
 	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
 }
