@@ -3,6 +3,8 @@ package com.porua.http.server;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpHandler;
 import org.glassfish.grizzly.http.server.Request;
 import org.glassfish.grizzly.http.server.Response;
@@ -17,14 +19,15 @@ import com.porua.core.processor.MessageProcessor;
 public class RequestHandler extends HttpHandler {
 	private Flow flow;
 
+	private static Logger logger = LogManager.getLogger(RequestHandler.class);
+
 	public RequestHandler(Flow flow) {
 		this.flow = flow;
 	}
 
 	public void service(Request request, Response response) throws Exception {
 		synchronized (this) {
-			System.out.println(SimpleHttpServer.class.getSimpleName() + " received request on: "
-					+ Thread.currentThread().getName());
+			logger.info(SimpleHttpServer.class.getSimpleName() + " received request on: " + Thread.currentThread().getName());
 
 			// Make poruaContext for each request and start processing them.
 			PoruaContext context = new PoruaContext(flow.getProcessors());
