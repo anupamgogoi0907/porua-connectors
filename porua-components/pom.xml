@@ -82,6 +82,7 @@
 							<param>com.porua.component.json.JsonToXml</param>
 							<param>com.porua.component.payload.PayloadSetter</param>
 							<param>com.porua.component.variable.VariableSetter</param>
+							<param>com.porua.component.logger.PoruaLogger</param>
 						</connectors>
 					</configuration>
 				</plugin>
