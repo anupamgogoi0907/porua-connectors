@@ -15,9 +15,24 @@ public class SimpleHttpRequesterPalette {
   @ConfigProperty
   String path;
 
+  @ConfigProperty(
+      enumClass = HTTP_REQUESETR_METHODS.class
+  )
+  private String method;
+
   @ConnectorConfig(
       configName = "config-ref",
       tagName = "requestor-config"
   )
   SimpleHttpRequesterConfigurationPalette config;
+
+  enum HTTP_REQUESETR_METHODS {
+    GET,
+
+    POST,
+
+    DELETE,
+
+    PUT
+  }
 }

@@ -13,5 +13,5 @@ public class SimpleHttpRequesterDefinitionParser extends PoruaBeanDefinitionPars
   }
 
   protected void doParse(Element element, BeanDefinitionBuilder builder) {
-    builder.setScope(BeanDefinition.SCOPE_PROTOTYPE);String path= element.getAttribute("path");builder.addPropertyValue("path",path);String configRef=element.getAttribute("config-ref");RuntimeBeanReference configRefBean = new RuntimeBeanReference(configRef);builder.addPropertyValue("config",configRefBean);}
+    builder.setScope(BeanDefinition.SCOPE_PROTOTYPE);String path= element.getAttribute("path");builder.addPropertyValue("path",path);String method= element.getAttribute("method");builder.addPropertyValue("method",method);String configRef=element.getAttribute("config-ref");RuntimeBeanReference configRefBean = new RuntimeBeanReference(configRef);builder.addPropertyValue("config",configRefBean);}
 }

@@ -15,11 +15,6 @@ public class SimpleHttpRequesterConfigurationJaxb {
   String name;
 
   @XmlAttribute(
-      name = "method"
-  )
-  String method;
-
-  @XmlAttribute(
       name = "host"
   )
   String host;

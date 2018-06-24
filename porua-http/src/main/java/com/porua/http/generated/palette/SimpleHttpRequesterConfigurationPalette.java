@@ -8,9 +8,6 @@ public class SimpleHttpRequesterConfigurationPalette {
   String name;
 
   @ConfigProperty
-  String method;
-
-  @ConfigProperty
   String host;
 
   @ConfigProperty

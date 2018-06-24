@@ -11,9 +11,6 @@ public class SimpleHttpRequesterConfiguration {
 	private String name;
 
 	@ConfigProperty
-	private String method;
-
-	@ConfigProperty
 	private String host;
 
 	@ConfigProperty
@@ -34,14 +31,6 @@ public class SimpleHttpRequesterConfiguration {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getMethod() {
-		return method;
-	}
-
-	public void setMethod(String method) {
-		this.method = method;
 	}
 
 	public String getHost() {
