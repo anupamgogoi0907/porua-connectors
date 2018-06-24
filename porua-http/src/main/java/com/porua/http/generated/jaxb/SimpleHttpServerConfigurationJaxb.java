@@ -2,7 +2,6 @@ package com.porua.http.generated.jaxb;
 
 import java.lang.String;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(
@@ -14,11 +13,6 @@ public class SimpleHttpServerConfigurationJaxb {
       name = "name"
   )
   String name;
-
-  @XmlAttribute(
-      name = "method"
-  )
-  private METHODS method;
 
   @XmlAttribute(
       name = "host"
@@ -34,15 +28,4 @@ public class SimpleHttpServerConfigurationJaxb {
       name = "path"
   )
   String path;
-
-  @XmlEnum
-  enum METHODS {
-    GET,
-
-    POST,
-
-    PUT,
-
-    DELETE
-  }
 }

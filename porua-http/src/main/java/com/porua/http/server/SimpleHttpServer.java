@@ -18,9 +18,15 @@ import com.porua.http.utility.HttpUtility;
  */
 @Connector(tagName = "listener", tagNamespace = "http://www.porua.org/http", tagSchemaLocation = "http://www.porua.org/http/http.xsd", imageName = "http-listener.png")
 public class SimpleHttpServer extends MessageListener {
+	enum HTTP_SERVER_METHODS {
+		GET, POST, PUT, DELETE
+	}
 
 	@ConfigProperty
 	private String path;
+
+	@ConfigProperty(enumClass = HTTP_SERVER_METHODS.class)
+	private String method;
 
 	@ConnectorConfig(configName = "config-ref", tagName = "listener-config")
 	private SimpleHttpServerConfiguration config;
@@ -65,20 +71,28 @@ public class SimpleHttpServer extends MessageListener {
 		listener.getTransport().setWorkerThreadPoolConfig(threadPoolConfig);
 	}
 
-	public SimpleHttpServerConfiguration getConfig() {
-		return config;
-	}
-
-	public void setConfig(SimpleHttpServerConfiguration config) {
-		this.config = config;
-	}
-
 	public String getPath() {
 		return path;
 	}
 
 	public void setPath(String path) {
 		this.path = path;
+	}
+
+	public String getMethod() {
+		return method;
+	}
+
+	public void setMethod(String method) {
+		this.method = method;
+	}
+
+	public SimpleHttpServerConfiguration getConfig() {
+		return config;
+	}
+
+	public void setConfig(SimpleHttpServerConfiguration config) {
+		this.config = config;
 	}
 
 }

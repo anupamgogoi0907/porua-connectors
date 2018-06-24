@@ -7,15 +7,8 @@ import com.porua.core.tag.ConfigProperty;
  */
 public class SimpleHttpServerConfiguration {
 
-	enum METHODS {
-		GET, POST, PUT, DELETE
-	}
-
 	@ConfigProperty
 	private String name;
-
-	@ConfigProperty(enumClass = METHODS.class)
-	private String method;
 
 	@ConfigProperty
 	private String host;
@@ -32,14 +25,6 @@ public class SimpleHttpServerConfiguration {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getMethod() {
-		return method;
-	}
-
-	public void setMethod(String method) {
-		this.method = method;
 	}
 
 	public String getHost() {
@@ -65,4 +50,5 @@ public class SimpleHttpServerConfiguration {
 	public void setPath(String path) {
 		this.path = path;
 	}
+
 }

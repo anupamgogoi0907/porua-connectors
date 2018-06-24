@@ -15,9 +15,24 @@ public class SimpleHttpServerPalette {
   @ConfigProperty
   String path;
 
+  @ConfigProperty(
+      enumClass = HTTP_SERVER_METHODS.class
+  )
+  private String method;
+
   @ConnectorConfig(
       configName = "config-ref",
       tagName = "listener-config"
   )
   SimpleHttpServerConfigurationPalette config;
+
+  enum HTTP_SERVER_METHODS {
+    GET,
+
+    POST,
+
+    PUT,
+
+    DELETE
+  }
 }

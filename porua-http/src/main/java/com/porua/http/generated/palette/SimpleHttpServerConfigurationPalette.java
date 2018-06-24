@@ -7,11 +7,6 @@ public class SimpleHttpServerConfigurationPalette {
   @ConfigProperty
   String name;
 
-  @ConfigProperty(
-      enumClass = METHODS.class
-  )
-  private String method;
-
   @ConfigProperty
   String host;
 
@@ -20,14 +15,4 @@ public class SimpleHttpServerConfigurationPalette {
 
   @ConfigProperty
   String path;
-
-  enum METHODS {
-    GET,
-
-    POST,
-
-    PUT,
-
-    DELETE
-  }
 }

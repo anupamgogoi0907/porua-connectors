@@ -13,7 +13,6 @@
 		name="simpleHttpRequesterConfigurationJaxb">
 		<xs:sequence />
 		<xs:attribute name="name" type="xs:string" />
-		<xs:attribute name="method" type="xs:string" />
 		<xs:attribute name="host" type="xs:string" />
 		<xs:attribute name="port" type="xs:int" use="required" />
 		<xs:attribute name="path" type="xs:string" />
@@ -23,7 +22,6 @@
 	<xs:complexType name="simpleHttpServerConfigurationJaxb">
 		<xs:sequence />
 		<xs:attribute name="name" type="xs:string" />
-		<xs:attribute name="method" type="tns:methods" />
 		<xs:attribute name="host" type="xs:string" />
 		<xs:attribute name="port" type="xs:int" use="required" />
 		<xs:attribute name="path" type="xs:string" />
@@ -31,14 +29,25 @@
 	<xs:complexType name="simpleHttpServerJaxb">
 		<xs:sequence />
 		<xs:attribute name="path" type="xs:string" />
+		<xs:attribute name="method" type="tns:httpSERVERMETHODS" />
 		<xs:attribute name="config-ref" type="xs:string" />
 	</xs:complexType>
 	<xs:complexType name="simpleHttpRequesterJaxb">
 		<xs:sequence />
 		<xs:attribute name="path" type="xs:string" />
+		<xs:attribute name="method"
+			type="tns:httpREQUESETRMETHODS" />
 		<xs:attribute name="config-ref" type="xs:string" />
 	</xs:complexType>
-	<xs:simpleType name="methods">
+	<xs:simpleType name="httpREQUESETRMETHODS">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="GET" />
+			<xs:enumeration value="POST" />
+			<xs:enumeration value="DELETE" />
+			<xs:enumeration value="PUT" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="httpSERVERMETHODS">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="GET" />
 			<xs:enumeration value="POST" />

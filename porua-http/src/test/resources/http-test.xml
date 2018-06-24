@@ -9,8 +9,8 @@
        http://www.porua.org/http/http.xsd">
 
 
-	<http:listener config-ref="myConfig" path="/hello" />
-	<http:listener-config name="myConfig" method="GET"
+	<http:listener method="GET" config-ref="myConfig" path="/hello" />
+	<http:listener-config name="myConfig" 
 		host="localhost" port="8080" path="/" />
 		
 	
