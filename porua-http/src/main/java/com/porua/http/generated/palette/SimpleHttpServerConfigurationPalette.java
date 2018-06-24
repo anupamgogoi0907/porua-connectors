@@ -7,6 +7,11 @@ public class SimpleHttpServerConfigurationPalette {
   @ConfigProperty
   String name;
 
+  @ConfigProperty(
+      enumClass = HTTP_SERVER_PROTOCOLS.class
+  )
+  private String protocol;
+
   @ConfigProperty
   String host;
 
@@ -15,4 +20,10 @@ public class SimpleHttpServerConfigurationPalette {
 
   @ConfigProperty
   String path;
+
+  enum HTTP_SERVER_PROTOCOLS {
+    HTTP,
+
+    HTTPS
+  }
 }

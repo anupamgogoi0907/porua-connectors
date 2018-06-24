@@ -12,5 +12,5 @@ public class SimpleHttpServerConfigurationDefinitionParser extends PoruaBeanDefi
   }
 
   protected void doParse(Element element, BeanDefinitionBuilder builder) {
-    builder.setScope(BeanDefinition.SCOPE_PROTOTYPE);String name= element.getAttribute("name");builder.addPropertyValue("name",name);String host= element.getAttribute("host");builder.addPropertyValue("host",host);String port= element.getAttribute("port");builder.addPropertyValue("port",port);String path= element.getAttribute("path");builder.addPropertyValue("path",path);}
+    builder.setScope(BeanDefinition.SCOPE_PROTOTYPE);String name= element.getAttribute("name");builder.addPropertyValue("name",name);String protocol= element.getAttribute("protocol");builder.addPropertyValue("protocol",protocol);String host= element.getAttribute("host");builder.addPropertyValue("host",host);String port= element.getAttribute("port");builder.addPropertyValue("port",port);String path= element.getAttribute("path");builder.addPropertyValue("path",path);}
 }

@@ -7,8 +7,15 @@ import com.porua.core.tag.ConfigProperty;
  */
 public class SimpleHttpServerConfiguration {
 
+	enum HTTP_SERVER_PROTOCOLS {
+		HTTP, HTTPS
+	}
+
 	@ConfigProperty
 	private String name;
+
+	@ConfigProperty(enumClass = HTTP_SERVER_PROTOCOLS.class)
+	private String protocol;
 
 	@ConfigProperty
 	private String host;
@@ -49,6 +56,14 @@ public class SimpleHttpServerConfiguration {
 
 	public void setPath(String path) {
 		this.path = path;
+	}
+
+	public String getProtocol() {
+		return protocol;
+	}
+
+	public void setProtocol(String protocol) {
+		this.protocol = protocol;
 	}
 
 }

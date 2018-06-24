@@ -1,7 +1,9 @@
 package com.porua.http.generated.jaxb;
 
+import java.lang.Integer;
 import java.lang.String;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(
@@ -15,6 +17,11 @@ public class SimpleHttpRequesterConfigurationJaxb {
   String name;
 
   @XmlAttribute(
+      name = "protocol"
+  )
+  private HTTP_REQUESTER_PROTOCOLS protocol;
+
+  @XmlAttribute(
       name = "host"
   )
   String host;
@@ -22,7 +29,7 @@ public class SimpleHttpRequesterConfigurationJaxb {
   @XmlAttribute(
       name = "port"
   )
-  int port;
+  Integer port;
 
   @XmlAttribute(
       name = "path"
@@ -38,4 +45,11 @@ public class SimpleHttpRequesterConfigurationJaxb {
       name = "headersfile"
   )
   String headersfile;
+
+  @XmlEnum
+  enum HTTP_REQUESTER_PROTOCOLS {
+    HTTP,
+
+    HTTPS
+  }
 }

@@ -7,14 +7,21 @@ import com.porua.core.tag.ConfigProperty;
  */
 public class SimpleHttpRequesterConfiguration {
 
+	enum HTTP_REQUESTER_PROTOCOLS {
+		HTTP, HTTPS
+	}
+
 	@ConfigProperty
 	private String name;
+
+	@ConfigProperty(enumClass = HTTP_REQUESTER_PROTOCOLS.class)
+	private String protocol;
 
 	@ConfigProperty
 	private String host;
 
 	@ConfigProperty
-	private int port;
+	private Integer port;
 
 	@ConfigProperty
 	private String path;
@@ -29,10 +36,6 @@ public class SimpleHttpRequesterConfiguration {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public String getHost() {
 		return host;
 	}
@@ -41,11 +44,11 @@ public class SimpleHttpRequesterConfiguration {
 		this.host = host;
 	}
 
-	public int getPort() {
+	public Integer getPort() {
 		return port;
 	}
 
-	public void setPort(int port) {
+	public void setPort(Integer port) {
 		this.port = port;
 	}
 
@@ -71,6 +74,18 @@ public class SimpleHttpRequesterConfiguration {
 
 	public void setHeadersfile(String headersfile) {
 		this.headersfile = headersfile;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getProtocol() {
+		return protocol;
+	}
+
+	public void setProtocol(String protocol) {
+		this.protocol = protocol;
 	}
 
 }

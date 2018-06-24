@@ -14,6 +14,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.porua.http.request.SimpleHttpRequester;
 import com.porua.http.server.SimpleHttpServer;
 
 public class TestHttpComponent {
@@ -24,6 +25,8 @@ public class TestHttpComponent {
 		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("http-test.xml");
 		SimpleHttpServer server = ctx.getBean(SimpleHttpServer.class);
 		Assert.assertNotNull(server.getConfig());
+		SimpleHttpRequester requester = ctx.getBean(SimpleHttpRequester.class);
+		requester.process();
 		ctx.close();
 	}
 

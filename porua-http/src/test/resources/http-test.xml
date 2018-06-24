@@ -13,6 +13,7 @@
 	<http:listener-config name="myConfig" 
 		host="localhost" port="8080" path="/" />
 		
-	
+	<http:requestor method="GET" path="/test" config-ref="requester-config"/>
+	<http:requestor-config name="requester-config"  path="/" host="localhost" />
 
 </beans>

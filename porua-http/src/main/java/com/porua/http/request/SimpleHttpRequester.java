@@ -7,6 +7,7 @@ import com.porua.core.processor.MessageProcessor;
 import com.porua.core.tag.ConfigProperty;
 import com.porua.core.tag.Connector;
 import com.porua.core.tag.ConnectorConfig;
+import com.porua.http.utility.HttpUtility;
 
 @Connector(tagName = "requestor", tagNamespace = "http://www.porua.org/http", tagSchemaLocation = "http://www.porua.org/http/http.xsd", imageName = "http-requestor.png")
 public class SimpleHttpRequester extends MessageProcessor {
@@ -26,13 +27,20 @@ public class SimpleHttpRequester extends MessageProcessor {
 
 	private static Logger logger = LogManager.getLogger(SimpleHttpRequester.class);
 
-	public SimpleHttpRequester() {
-	}
-
 	@Override
 	public void process() {
-		logger.debug("Receiving request...");
-		super.process();
+		try {
+			logger.debug("Receiving request...");
+			StringBuilder url = new StringBuilder();
+			url.append("http//").append(config.getHost());
+			url.append(config.getPort() == null ? "" : ":" + config.getPort());
+			url.append(HttpUtility.sanitizePath(config.getPath()));
+
+			super.process();
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+
 	}
 
 	public String getPath() {
