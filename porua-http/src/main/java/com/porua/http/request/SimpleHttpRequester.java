@@ -43,12 +43,18 @@ public class SimpleHttpRequester extends MessageProcessor {
 			url.append(HttpUtility.resolvePath(path, config.getPath()));
 
 			Request request = new RequestBuilder().setMethod(this.getMethod()).setUrl(url.toString()).build();
-			asyncHttpClient = new AsyncHttpClient();
+			asyncHttpClient = super.springContext.getBean(AsyncHttpClient.class);
+			if (asyncHttpClient == null) {
+				asyncHttpClient = new AsyncHttpClient();
+			} else {
+				addBeanToSpringContext(AsyncHttpClient.class, null, "asyncHttpClient");
+			}
+
 			asyncHttpClient.prepareRequest(request).execute(new AsyncCompletionHandler<Response>() {
 
 				@Override
 				public Response onCompleted(Response response) throws Exception {
-					System.out.println("Current thread: " + Thread.currentThread().getName() + response.getResponseBody());
+					poruaContext.setPayload(response.getResponseBodyAsStream());
 					process();
 					return null;
 				}
