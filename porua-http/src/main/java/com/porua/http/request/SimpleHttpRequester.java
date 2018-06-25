@@ -3,6 +3,11 @@ package com.porua.http.request;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.ning.http.client.AsyncCompletionHandler;
+import com.ning.http.client.AsyncHttpClient;
+import com.ning.http.client.Request;
+import com.ning.http.client.RequestBuilder;
+import com.ning.http.client.Response;
 import com.porua.core.processor.MessageProcessor;
 import com.porua.core.tag.ConfigProperty;
 import com.porua.core.tag.Connector;
@@ -26,18 +31,31 @@ public class SimpleHttpRequester extends MessageProcessor {
 	private SimpleHttpRequesterConfiguration config;
 
 	private static Logger logger = LogManager.getLogger(SimpleHttpRequester.class);
+	private AsyncHttpClient asyncHttpClient;
 
 	@Override
 	public void process() {
 		try {
 			logger.debug("Receiving request...");
 			StringBuilder url = new StringBuilder();
-			url.append("http//").append(config.getHost());
+			url.append("http".equals(config.getProtocol().toLowerCase()) ? "http" : "https").append("://").append(config.getHost());
 			url.append(config.getPort() == null ? "" : ":" + config.getPort());
-			url.append(HttpUtility.sanitizePath(config.getPath()));
+			url.append(HttpUtility.resolvePath(path, config.getPath()));
 
-			super.process();
+			Request request = new RequestBuilder().setMethod(this.getMethod()).setUrl(url.toString()).build();
+			asyncHttpClient = new AsyncHttpClient();
+			asyncHttpClient.prepareRequest(request).execute(new AsyncCompletionHandler<Response>() {
+
+				@Override
+				public Response onCompleted(Response response) throws Exception {
+					System.out.println("Current thread: " + Thread.currentThread().getName() + response.getResponseBody());
+					process();
+					return null;
+				}
+			});
+
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error(e.getMessage());
 		}
 

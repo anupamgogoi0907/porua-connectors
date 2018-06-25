@@ -1,5 +1,7 @@
 package com.porua.http.test;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,13 +22,15 @@ import com.porua.http.server.SimpleHttpServer;
 public class TestHttpComponent {
 
 	@Test
-	public void testHttp() {
+	public void testHttp() throws IOException {
 
 		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("http-test.xml");
 		SimpleHttpServer server = ctx.getBean(SimpleHttpServer.class);
 		Assert.assertNotNull(server.getConfig());
 		SimpleHttpRequester requester = ctx.getBean(SimpleHttpRequester.class);
-		requester.process();
+		assertNotNull(requester);
+		// requester.process();
+		// System.in.read();
 		ctx.close();
 	}
 

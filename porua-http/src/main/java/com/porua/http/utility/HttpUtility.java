@@ -13,4 +13,10 @@ public class HttpUtility {
 			return "/";
 		}
 	}
+
+	public static String resolvePath(String pathInConnector, String pathInConfig) throws Exception {
+		pathInConnector = sanitizePath(pathInConnector);
+		pathInConfig = sanitizePath(pathInConfig);
+		return pathInConnector.concat(pathInConfig);
+	}
 }

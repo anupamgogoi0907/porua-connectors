@@ -42,8 +42,7 @@ public class SimpleHttpServer extends MessageListener {
 	public void startListener(Flow flow) {
 		try {
 			configThread();
-			path = (path == null || path.equals("")) ? config.getPath() : config.getPath().concat(path);
-			path = HttpUtility.sanitizePath(path);
+			path = HttpUtility.resolvePath(path, config.getPath());
 			server.getServerConfiguration().addHttpHandler(new RequestHandler(flow), path);
 			server.start();
 			logger.info("Listening on: " + "http://" + config.getHost() + ":" + config.getPort() + path);
