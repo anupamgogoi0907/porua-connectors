@@ -3,11 +3,9 @@ package com.porua.http.request;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.ning.http.client.AsyncCompletionHandler;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.Request;
 import com.ning.http.client.RequestBuilder;
-import com.ning.http.client.Response;
 import com.porua.core.processor.MessageProcessor;
 import com.porua.core.tag.ConfigProperty;
 import com.porua.core.tag.Connector;
@@ -50,15 +48,7 @@ public class SimpleHttpRequester extends MessageProcessor {
 				addBeanToSpringContext(AsyncHttpClient.class, null, "asyncHttpClient");
 			}
 			asyncHttpClient = super.springContext.getBean(AsyncHttpClient.class);
-			asyncHttpClient.prepareRequest(request).execute(new AsyncCompletionHandler<Response>() {
-
-				@Override
-				public Response onCompleted(Response response) throws Exception {
-					poruaContext.setPayload(response.getResponseBodyAsStream());
-					process();
-					return null;
-				}
-			});
+			asyncHttpClient.prepareRequest(request).execute(new RequestHandler(this));
 
 		} catch (Exception e) {
 			e.printStackTrace();
