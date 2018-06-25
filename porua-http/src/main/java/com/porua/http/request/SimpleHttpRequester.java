@@ -42,14 +42,14 @@ public class SimpleHttpRequester extends MessageProcessor {
 			url.append(config.getPort() == null ? "" : ":" + config.getPort());
 			url.append(HttpUtility.resolvePath(path, config.getPath()));
 
+			// Make request.
 			Request request = new RequestBuilder().setMethod(this.getMethod()).setUrl(url.toString()).build();
-			asyncHttpClient = super.springContext.getBean(AsyncHttpClient.class);
-			if (asyncHttpClient == null) {
-				asyncHttpClient = new AsyncHttpClient();
-			} else {
+
+			// Check if http client is already in Spring Context.If not add it.
+			if (!super.springContext.containsBean("asyncHttpClient")) {
 				addBeanToSpringContext(AsyncHttpClient.class, null, "asyncHttpClient");
 			}
-
+			asyncHttpClient = super.springContext.getBean(AsyncHttpClient.class);
 			asyncHttpClient.prepareRequest(request).execute(new AsyncCompletionHandler<Response>() {
 
 				@Override
