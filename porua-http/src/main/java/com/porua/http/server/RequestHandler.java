@@ -29,6 +29,9 @@ public class RequestHandler extends HttpHandler {
 		synchronized (this) {
 			logger.info(SimpleHttpServer.class.getSimpleName() + " received request on: " + Thread.currentThread().getName());
 
+			// Suspend the Response till processing is done.
+			response.suspend();
+
 			// Make poruaContext for each request and start processing them.
 			PoruaContext context = new PoruaContext(flow.getProcessors());
 			context.setResponder(response);

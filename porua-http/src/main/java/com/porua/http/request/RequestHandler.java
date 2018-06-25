@@ -28,6 +28,7 @@ public class RequestHandler extends AsyncCompletionHandler<Response> {
 			if (res instanceof org.glassfish.grizzly.http.server.Response) {
 				org.glassfish.grizzly.http.server.Response responder = (org.glassfish.grizzly.http.server.Response) res;
 				responder.getWriter().write(response.getResponseBody());
+				responder.resume();
 			}
 		} else {
 			this.currentProcessor.getPoruaContext().setPayload(response.getResponseBodyAsStream());
