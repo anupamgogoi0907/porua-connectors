@@ -1,11 +1,19 @@
 package com.porua.http.request;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.ning.http.client.AsyncHttpClient;
+import com.ning.http.client.Param;
 import com.ning.http.client.Request;
 import com.ning.http.client.RequestBuilder;
+import com.porua.core.context.PoruaClassLoader;
+import com.porua.core.context.PoruaContext;
 import com.porua.core.processor.MessageProcessor;
 import com.porua.core.tag.ConfigProperty;
 import com.porua.core.tag.Connector;
@@ -55,6 +63,24 @@ public class SimpleHttpRequester extends MessageProcessor {
 			logger.error(e.getMessage());
 		}
 
+	}
+
+	private List<Param> makeQueryParams() throws Exception {
+		Properties props = loadPropertyFile(config.getParmsfile());
+		List<Param> queryParams = new ArrayList<>();
+		while (props.keys().hasMoreElements()) {
+			String key = (String) props.keys().nextElement();
+			queryParams.add(new Param(key, props.getProperty(key)));
+		}
+		return queryParams;
+	}
+
+	private Properties loadPropertyFile(String propFile) throws Exception {
+		ClassLoader loader = super.springContext.getBean(PoruaClassLoader.class);
+		InputStream is = loader.getResourceAsStream(propFile);
+		Properties props = new Properties();
+		props.load(is);
+		return props;
 	}
 
 	public String getPath() {
