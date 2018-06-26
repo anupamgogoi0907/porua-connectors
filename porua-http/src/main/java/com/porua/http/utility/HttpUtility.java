@@ -2,6 +2,9 @@ package com.porua.http.utility;
 
 public class HttpUtility {
 
+	public static String QUERY_PARAM_PREFIX = "query.param";
+	public static String HEADER_NAME_PREFIX = "header.param";
+
 	public static String sanitizePath(String path) throws Exception {
 		if (path != null && !"".equals(path)) {
 			path = path.replaceAll("//", "/");

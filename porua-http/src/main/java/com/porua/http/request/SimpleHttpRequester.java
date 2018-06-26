@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.ning.http.client.AsyncHttpClient;
+import com.ning.http.client.FluentCaseInsensitiveStringsMap;
 import com.ning.http.client.Param;
 import com.ning.http.client.RequestBuilder;
 import com.porua.core.context.PoruaClassLoader;
@@ -48,6 +49,13 @@ public class SimpleHttpRequester extends MessageProcessor {
 
 			// Make request.
 			RequestBuilder rb = new RequestBuilder().setMethod(this.getMethod()).setUrl(url.toString());
+
+			// Make headers.
+			if (config.getHeadersfile() != null && !"".equals(config.getHeadersfile())) {
+				rb.setHeaders(makeHeaders());
+			}
+
+			// Make params.
 			if (config.getParmsfile() != null && !"".equals(config.getParmsfile())) {
 				rb.setQueryParams(makeQueryParams());
 			}
@@ -78,10 +86,32 @@ public class SimpleHttpRequester extends MessageProcessor {
 		if (!props.isEmpty()) {
 			props.keySet().stream().forEach(objKey -> {
 				String key = (String) objKey;
-				queryParams.add(new Param(key, props.getProperty(key)));
+				if (key.startsWith(HttpUtility.QUERY_PARAM_PREFIX)) {
+					queryParams.add(new Param(key.substring(HttpUtility.QUERY_PARAM_PREFIX.length() + 1, key.length()), props.getProperty(key)));
+				}
 			});
 		}
 		return queryParams;
+	}
+
+	/**
+	 * Read headers from property file.
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	private FluentCaseInsensitiveStringsMap makeHeaders() throws Exception {
+		FluentCaseInsensitiveStringsMap headers = new FluentCaseInsensitiveStringsMap();
+		Properties props = loadPropertyFile(config.getHeadersfile());
+		if (!props.isEmpty()) {
+			props.keySet().stream().forEach(objKey -> {
+				String key = (String) objKey;
+				if (key.startsWith(HttpUtility.HEADER_NAME_PREFIX)) {
+					headers.add(key.substring(HttpUtility.HEADER_NAME_PREFIX.length() + 1, key.length()), props.getProperty(key));
+				}
+			});
+		}
+		return headers;
 	}
 
 	/**
