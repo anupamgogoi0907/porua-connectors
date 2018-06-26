@@ -1,18 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:ns1="http://www.porua.org/core"
-	xmlns:ns2="http://www.porua.org/components"
+	xmlns:comp="http://www.porua.org/components"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans        
 	https://www.springframework.org/beans/spring-beans-4.0.xsd 
-	http://www.porua.org/core 
-	http://www.porua.org/core/core.xsd 
 	http://www.porua.org/components 
 	http://www.porua.org/components/components.xsd">
 
 
-	<ns1:porua-flow id="flow-25">
-		<ns2:set-payload payload="Hello World" />
-	</ns1:porua-flow>
+	<!-- Set payload -->
+	<comp:set-payload payload="hello world" />
 
+	<!-- Set variable -->
+	<comp:set-variable name="a" value="10" />
+
+	<!-- Porua Logger -->
+	<comp:porua-logger />
+
+	<!-- File Connector -->
+	<comp:file-connector />
+
+	<!-- Json To XML -->
+	<comp:json-to-xml />
+
+	<!-- Json To Java -->
+	<comp:json-to-java />
+
+	<!-- Java Component -->
+	<comp:java-component />
 </beans>
