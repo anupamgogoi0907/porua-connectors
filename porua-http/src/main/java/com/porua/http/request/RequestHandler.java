@@ -1,10 +1,15 @@
 package com.porua.http.request;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.ning.http.client.AsyncCompletionHandler;
 import com.ning.http.client.Response;
 import com.porua.core.processor.MessageProcessor;
 
 public class RequestHandler extends AsyncCompletionHandler<Response> {
+
+	private static Logger logger = LogManager.getLogger(RequestHandler.class);
 
 	MessageProcessor currentProcessor;
 
@@ -23,6 +28,7 @@ public class RequestHandler extends AsyncCompletionHandler<Response> {
 	 */
 	@Override
 	public Response onCompleted(Response response) throws Exception {
+		logger.debug("Response received:\n" + response.getResponseBody());
 		if (this.currentProcessor.getPoruaContext().getProcessors().isEmpty()) {
 			Object res = this.currentProcessor.getPoruaContext().getResponder();
 			if (res instanceof org.glassfish.grizzly.http.server.Response) {
