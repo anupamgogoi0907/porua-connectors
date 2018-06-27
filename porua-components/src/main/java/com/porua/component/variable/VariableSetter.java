@@ -2,8 +2,9 @@ package com.porua.component.variable;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
 
-import com.porua.core.PoruaConstants;
 import com.porua.core.processor.MessageProcessor;
 import com.porua.core.tag.ConfigProperty;
 import com.porua.core.tag.Connector;
@@ -23,20 +24,21 @@ public class VariableSetter extends MessageProcessor {
 	public void process() {
 		if (value != null) {
 			logger.info("Setting variable...");
-			value = parseValue(value);
-			super.poruaContext.getMapVariable().put(name, value);
+			parseValue(value);
 		}
-
 		super.process();
 	}
 
-	private String parseValue(String value) {
-		if (value.contains(PoruaConstants.PORUA_CONTEXT_ATTRIBUTES) || value.contains(PoruaConstants.PORUA_CONTEXT_VARIABLES) || value.contains(PoruaConstants.PORUA_PAYLOAD)) {
-			value = (String) super.parseExpression(new StringBuilder(value));
-		} else {
-			value = (String) value;
+	private void parseValue(String value) {
+		try {
+			logger.debug("Parsing value: " + this.value);
+			ExpressionParser parser = new SpelExpressionParser();
+			Object res = parser.parseExpression(this.value).getValue();
+			String exp = "mapVariable['" + name + "']";
+			parser.parseExpression(exp).setValue(poruaContext, res);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
 		}
-		return value;
 	}
 
 	public String getName() {

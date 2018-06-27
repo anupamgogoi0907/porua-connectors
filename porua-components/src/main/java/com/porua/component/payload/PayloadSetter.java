@@ -2,7 +2,9 @@ package com.porua.component.payload;
 
 import java.io.InputStream;
 
-import com.porua.core.PoruaConstants;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+
 import com.porua.core.context.PoruaClassLoader;
 import com.porua.core.processor.MessageProcessor;
 import com.porua.core.tag.ConfigProperty;
@@ -27,19 +29,15 @@ public class PayloadSetter extends MessageProcessor {
 			payload = null;
 		}
 		if (payload != null) {
-			payload = parsePayload(payload);
-			super.poruaContext.setPayload(payload);
+			parsePayload(payload);
 		}
 		super.process();
 	}
 
-	private String parsePayload(String payload) {
-		if (payload.contains(PoruaConstants.PORUA_CONTEXT_ATTRIBUTES) || payload.contains(PoruaConstants.PORUA_CONTEXT_VARIABLES) || payload.contains(PoruaConstants.PORUA_PAYLOAD)) {
-			payload = (String) super.parseExpression(new StringBuilder(payload));
-		} else {
-			payload = (String) payload;
-		}
-		return payload;
+	private void parsePayload(String payload) {
+		ExpressionParser parser = new SpelExpressionParser();
+		Object res = parser.parseExpression(payload).getValue(super.poruaContext);
+		super.poruaContext.setPayload(res);
 	}
 
 	public String getPayload() {
