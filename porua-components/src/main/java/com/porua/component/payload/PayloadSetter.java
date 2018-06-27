@@ -35,7 +35,7 @@ public class PayloadSetter extends MessageProcessor {
 	}
 
 	private void parsePayload(String payload) {
-		ExpressionParser parser = new SpelExpressionParser();
+		ExpressionParser parser = super.springContext.getBean(SpelExpressionParser.class);
 		Object res = parser.parseExpression(payload).getValue(super.poruaContext);
 		super.poruaContext.setPayload(res);
 	}

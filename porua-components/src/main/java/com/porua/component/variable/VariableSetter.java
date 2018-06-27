@@ -32,7 +32,7 @@ public class VariableSetter extends MessageProcessor {
 	private void parseValue(String value) {
 		try {
 			logger.debug("Parsing value: " + this.value);
-			ExpressionParser parser = new SpelExpressionParser();
+			ExpressionParser parser = super.springContext.getBean(SpelExpressionParser.class);
 			Object res = parser.parseExpression(this.value).getValue();
 			String exp = "mapVariable['" + name + "']";
 			parser.parseExpression(exp).setValue(poruaContext, res);
