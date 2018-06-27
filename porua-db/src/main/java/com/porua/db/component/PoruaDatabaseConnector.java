@@ -5,12 +5,14 @@ import java.sql.SQLException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import com.porua.core.context.PoruaClassLoader;
 import com.porua.core.processor.MessageProcessor;
 import com.porua.core.tag.ConfigProperty;
 import com.porua.core.tag.Connector;
 import com.porua.core.tag.ConnectorConfig;
+import com.porua.core.utility.PoruaUtility;
 
 @Connector(tagName = "db-connector", tagNamespace = "http://www.porua.org/db", tagSchemaLocation = "http://www.porua.org/db/db.xsd", imageName = "core-database.png")
 public class PoruaDatabaseConnector extends MessageProcessor {
@@ -61,7 +63,7 @@ public class PoruaDatabaseConnector extends MessageProcessor {
 		args[2] = config.getLogin();
 		args[3] = config.getPassword();
 		args[4] = loader;
-		super.addBeanToSpringContext(PoruaDataSource.class, args, "poruaDataSource");
+		PoruaUtility.addBeanToSpringContext("poruaDataSource", PoruaDataSource.class, (FileSystemXmlApplicationContext) super.springContext, args);
 
 	}
 
