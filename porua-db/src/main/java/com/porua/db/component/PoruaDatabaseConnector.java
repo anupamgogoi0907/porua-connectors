@@ -2,11 +2,14 @@ package com.porua.db.component;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
+import com.porua.core.PoruaConstants;
 import com.porua.core.context.PoruaClassLoader;
 import com.porua.core.processor.MessageProcessor;
 import com.porua.core.tag.ConfigProperty;
@@ -35,7 +38,7 @@ public class PoruaDatabaseConnector extends MessageProcessor {
 			}
 			dataSource = super.springContext.getBean(PoruaDataSource.class);
 			conn = dataSource.getConnection();
-			query = super.evaluateExpression(query);
+			query = evaluateQuery(query);
 			logger.info("Query processed: " + query);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -65,6 +68,37 @@ public class PoruaDatabaseConnector extends MessageProcessor {
 		args[4] = loader;
 		PoruaUtility.addBeanToSpringContext("poruaDataSource", PoruaDataSource.class, (FileSystemXmlApplicationContext) super.springContext, args);
 
+	}
+
+	/**
+	 * Search the query for possible expressions and evaluate the expression.
+	 * 
+	 * @param query
+	 * @return
+	 */
+	protected String evaluateQuery(String query) {
+		List<String> keyWords = Arrays.asList(PoruaConstants.PORUA_CONTEXT_VARIABLES, PoruaConstants.PORUA_CONTEXT_ATTRIBUTES, PoruaConstants.PORUA_PAYLOAD);
+		for (String key : keyWords) {
+			StringBuilder str = new StringBuilder();
+			int i = query.indexOf(key);
+			while (i >= 0) {
+				for (int j = i; j < query.length(); j++) {
+					str.append(query.charAt(j));
+					if (Character.isWhitespace(query.charAt(j)) || (j + 1) == query.length()) {
+						// Object value = parseExpression(str);
+						// query = query.replace(str.toString().trim(), value.toString());
+						// Reset.
+						str = new StringBuilder();
+						break;
+					}
+
+				}
+				i = query.indexOf(key, i + key.length());
+
+			}
+
+		}
+		return query;
 	}
 
 	public PoruaDatabaseConfiguration getConfig() {
