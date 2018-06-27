@@ -7,6 +7,7 @@ import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.FluentCaseInsensitiveStringsMap;
@@ -17,6 +18,7 @@ import com.porua.core.processor.MessageProcessor;
 import com.porua.core.tag.ConfigProperty;
 import com.porua.core.tag.Connector;
 import com.porua.core.tag.ConnectorConfig;
+import com.porua.core.utility.PoruaUtility;
 import com.porua.http.utility.HttpUtility;
 
 @Connector(tagName = "requestor", tagNamespace = "http://www.porua.org/http", tagSchemaLocation = "http://www.porua.org/http/http.xsd", imageName = "http-requestor.png")
@@ -62,7 +64,7 @@ public class SimpleHttpRequester extends MessageProcessor {
 
 			// Check if http client is already in Spring Context.If not add it.
 			if (!super.springContext.containsBean("asyncHttpClient")) {
-				addBeanToSpringContext(AsyncHttpClient.class, null, "asyncHttpClient");
+				PoruaUtility.addBeanToSpringContext("asyncHttpClient", AsyncHttpClient.class, (FileSystemXmlApplicationContext) super.springContext);
 			}
 			asyncHttpClient = super.springContext.getBean(AsyncHttpClient.class);
 			asyncHttpClient.prepareRequest(rb.build()).execute(new RequestHandler(this));
