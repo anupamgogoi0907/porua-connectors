@@ -29,12 +29,16 @@ public class VariableSetter extends MessageProcessor {
 		super.process();
 	}
 
-	private void parseValue(String value) {
+	/**
+	 * Parse the value and evaluate it.
+	 * 
+	 * @param valueExp
+	 */
+	private void parseValue(String valueExp) {
 		try {
-			logger.debug("Parsing value: " + this.value);
-			ExpressionParser parser = super.springContext.getBean(SpelExpressionParser.class);
-			Object res = parser.parseExpression(this.value).getValue();
+			Object res = super.parseValueExpression(valueExp);
 			String exp = "mapVariable['" + name + "']";
+			ExpressionParser parser = super.springContext.getBean(SpelExpressionParser.class);
 			parser.parseExpression(exp).setValue(poruaContext, res);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
