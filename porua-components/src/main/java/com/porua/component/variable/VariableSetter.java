@@ -38,14 +38,12 @@ public class VariableSetter extends MessageProcessor {
 			PoruaExpressionEvaluator evaluator = super.springContext.getBean(PoruaExpressionEvaluator.class);
 
 			Object res = null;
-			String exp = "";
 			if (valueExp.startsWith("json:")) {
-				exp = valueExp.substring("json:".length(), valueExp.length());
-				res = evaluator.parseJsonExpression(exp, poruaContext);
+				res = evaluator.parseJsonExpression(valueExp, poruaContext);
 				super.poruaContext.getMapVariable().put(name, res);
 			} else {
 				res = evaluator.parseValueExpression(valueExp, poruaContext);
-				exp = "mapVariable['" + name + "']";
+				String exp = "mapVariable['" + name + "']";
 				evaluator.parseExpression(exp).setValue(poruaContext, res);
 			}
 		} catch (Exception e) {
