@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.porua.core.context.PoruaClassLoader;
+import com.porua.core.pel.PoruaExpressionEvaluator;
 import com.porua.core.processor.MessageProcessor;
 import com.porua.core.tag.ConfigProperty;
 import com.porua.core.tag.Connector;
@@ -25,6 +26,8 @@ public class PayloadSetter extends MessageProcessor {
 	public void process() {
 		try {
 			logger.debug("Setting payload...");
+			PoruaExpressionEvaluator evaluator = super.springContext.getBean(PoruaExpressionEvaluator.class);
+
 			// Processing the file input gets high priority when both properties are filled.
 			if (file != null && !file.equals("")) {
 				PoruaClassLoader loader = super.springContext.getBean(PoruaClassLoader.class);
@@ -33,7 +36,7 @@ public class PayloadSetter extends MessageProcessor {
 				payload = null;
 			}
 			if (payload != null) {
-				Object res = super.parseValueExpression(payload);
+				Object res = evaluator.parseValueExpression(payload, poruaContext);
 				super.poruaContext.setPayload(res);
 			}
 			super.process();

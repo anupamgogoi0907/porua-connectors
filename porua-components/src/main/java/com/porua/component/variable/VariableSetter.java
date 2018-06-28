@@ -2,9 +2,8 @@ package com.porua.component.variable;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.expression.ExpressionParser;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
 
+import com.porua.core.pel.PoruaExpressionEvaluator;
 import com.porua.core.processor.MessageProcessor;
 import com.porua.core.tag.ConfigProperty;
 import com.porua.core.tag.Connector;
@@ -36,17 +35,18 @@ public class VariableSetter extends MessageProcessor {
 	 */
 	private void parseValue(String valueExp) {
 		try {
+			PoruaExpressionEvaluator evaluator = super.springContext.getBean(PoruaExpressionEvaluator.class);
+
 			Object res = null;
 			String exp = "";
 			if (valueExp.startsWith("json:")) {
 				exp = valueExp.substring("json:".length(), valueExp.length());
-				res = super.parseJsonExpression(exp);
+				res = evaluator.parseJsonExpression(exp, poruaContext);
 				super.poruaContext.getMapVariable().put(name, res);
 			} else {
-				res = super.parseValueExpression(valueExp);
+				res = evaluator.parseValueExpression(valueExp, poruaContext);
 				exp = "mapVariable['" + name + "']";
-				ExpressionParser parser = super.springContext.getBean(SpelExpressionParser.class);
-				parser.parseExpression(exp).setValue(poruaContext, res);
+				evaluator.getParser().parseExpression(exp).setValue(poruaContext, res);
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
