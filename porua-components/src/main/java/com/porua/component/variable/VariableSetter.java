@@ -46,7 +46,7 @@ public class VariableSetter extends MessageProcessor {
 			} else {
 				res = evaluator.parseValueExpression(valueExp, poruaContext);
 				exp = "mapVariable['" + name + "']";
-				evaluator.getParser().parseExpression(exp).setValue(poruaContext, res);
+				evaluator.parseExpression(exp).setValue(poruaContext, res);
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
