@@ -3,6 +3,7 @@ package com.porua.http.server;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpHandler;
@@ -27,7 +28,8 @@ public class RequestHandler extends HttpHandler {
 
 	public void service(Request request, Response response) throws Exception {
 		synchronized (this) {
-			logger.info(SimpleHttpServer.class.getSimpleName() + " received request on: " + Thread.currentThread().getName());
+			logger.info(SimpleHttpServer.class.getSimpleName() + " received request on: "
+					+ Thread.currentThread().getName());
 
 			// Suspend the Response till processing is done.
 			response.suspend();
@@ -73,7 +75,12 @@ public class RequestHandler extends HttpHandler {
 		for (String p : mapParam.keySet()) {
 			String[] values = mapParam.get(p);
 			if (values != null && values.length != 0) {
-				mapParameter.put(p, values[0]);
+				if (NumberUtils.isCreatable(values[0])) {
+					Number n = NumberUtils.createNumber(values[0]);
+					mapParameter.put(p, n);
+				} else {
+					mapParameter.put(p, values[0]);
+				}
 			}
 		}
 		return mapParameter;
