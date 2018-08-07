@@ -6,7 +6,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import com.porua.core.context.PoruaClassLoader;
 import com.porua.core.processor.MessageProcessor;
 import com.porua.core.tag.ConfigProperty;
 import com.porua.core.tag.Connector;
@@ -23,6 +26,8 @@ public class PoruaFileConnector extends MessageProcessor {
 	@ConfigProperty(enumClass = OPERATIONS.class)
 	private String operation;
 
+	private Logger logger = LogManager.getLogger(PoruaFileConnector.class);
+
 	@Override
 	public void process() {
 		if (FileOperations.READ.name().equals(this.operation.toUpperCase())) {
@@ -35,7 +40,9 @@ public class PoruaFileConnector extends MessageProcessor {
 
 	private void createFile() {
 		try {
-			Path path = Paths.get(this.file);
+			logger.debug("Creating file: " + this.file);
+			PoruaClassLoader loader = super.springContext.getBean(PoruaClassLoader.class);
+			Path path = Paths.get(loader.getResource(this.file).getFile());
 			if (super.poruaContext.getPayload() instanceof String) {
 				Files.write(path, ((String) super.poruaContext.getPayload()).getBytes());
 			} else if (super.poruaContext.getPayload() instanceof InputStream) {
@@ -45,14 +52,19 @@ public class PoruaFileConnector extends MessageProcessor {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 	}
 
 	private void readFile() {
 		try {
-			super.poruaContext.setPayload(Files.newInputStream(Paths.get(this.file)));
+			logger.debug("Reading file: " + this.file);
+			PoruaClassLoader loader = super.springContext.getBean(PoruaClassLoader.class);
+			String f = loader.getResource(this.file).getFile();
+			super.poruaContext.setPayload(Files.newInputStream(Paths.get(f)));
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 	}
 

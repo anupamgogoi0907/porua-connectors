@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 
-import com.porua.component.logger.PoruaLogger;
 import com.porua.core.context.PoruaClassLoader;
 import com.porua.core.context.PoruaContext;
 import com.porua.core.processor.MessageProcessor;
@@ -17,7 +16,7 @@ public class JavaComponent extends MessageProcessor {
 	@ConfigProperty
 	private String className;
 
-	private Logger logger = LogManager.getLogger(PoruaLogger.class);
+	private Logger logger = LogManager.getLogger(JavaComponent.class);
 
 	@Override
 	public void process() {
