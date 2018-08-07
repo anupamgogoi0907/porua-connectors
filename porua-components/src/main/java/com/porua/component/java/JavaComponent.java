@@ -1,5 +1,10 @@
 package com.porua.component.java;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
@@ -25,9 +30,14 @@ public class JavaComponent extends MessageProcessor {
 			PoruaClassLoader loader = super.springContext.getBean(PoruaClassLoader.class);
 			Class<?> clazz = loader.loadClass(className);
 			if (Pluggable.class.isAssignableFrom(clazz)) {
-				Object obj = clazz.newInstance();
-				clazz.getDeclaredMethod("onCall", ApplicationContext.class, PoruaContext.class).invoke(obj,
-						super.springContext, super.poruaContext);
+				if (super.poruaContext.getPayload() instanceof InputStream) {
+					BufferedInputStream bis = new BufferedInputStream((InputStream) super.poruaContext.getPayload());
+					bis.mark(bis.available());
+					processComponentLogic(clazz);
+					bis.reset();
+				} else {
+					processComponentLogic(clazz);
+				}
 				super.process();
 			} else {
 				throw new Exception("Java Component must implement Pluggable interface.");
@@ -37,6 +47,56 @@ public class JavaComponent extends MessageProcessor {
 			logger.error(e.getMessage());
 		}
 
+	}
+
+	/**
+	 * Process the custom component.
+	 * 
+	 * @param clazz
+	 */
+	private void processComponentLogic(Class<?> clazz) {
+		try {
+			logger.info("Processing " + className);
+			Object obj = clazz.newInstance();
+			clazz.getDeclaredMethod("onCall", ApplicationContext.class, PoruaContext.class, Object.class).invoke(obj,
+					super.springContext, super.poruaContext, clonePayload());
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(e.getMessage());
+		}
+
+	}
+
+	/**
+	 * We have to clone the Payload if it's a InputStream. Otherwise if the custom
+	 * component closes the stream exception will be thrown.
+	 * 
+	 * @return
+	 */
+	private Object clonePayload() {
+		try {
+			logger.info("Cloning payload... ");
+			if (super.poruaContext.getPayload() instanceof InputStream) {
+				InputStream is = (InputStream) super.poruaContext.getPayload();
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+				byte[] buffer = new byte[1024];
+				int len;
+				while ((len = is.read(buffer)) > -1) {
+					baos.write(buffer, 0, len);
+				}
+				baos.flush();
+
+				InputStream isClone = new ByteArrayInputStream(baos.toByteArray());
+				return isClone;
+			} else {
+				return super.poruaContext.getPayload();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(e.getMessage());
+		}
+		return null;
 	}
 
 	public String getClassName() {
