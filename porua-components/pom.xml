@@ -92,7 +92,7 @@
 	<distributionManagement>
 		<repository>
 			<id>internal</id>
-			<url>file:///Users/ac-agogoi/Desktop/artifacts/</url>
+			<url>file:///home/agogoi/Desktop/artifacts/</url>
 		</repository>
 	</distributionManagement>
 </project>
