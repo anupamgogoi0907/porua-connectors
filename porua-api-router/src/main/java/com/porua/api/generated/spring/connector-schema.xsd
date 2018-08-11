@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://www.porua.org/apirouter"
+	targetNamespace="http://www.porua.org/apirouter" version="1.0">
+	<xs:element name="api-router" type="tns:apiRouterJaxb" />
+	<xs:element name="router-config" type="tns:routerConfigJaxb" />
+	<xs:complexType name="routerConfigJaxb">
+		<xs:sequence />
+		<xs:attribute name="name" type="xs:string" />
+		<xs:attribute name="protocol"
+			type="tns:httpSERVERPROTOCOLS" />
+		<xs:attribute name="host" type="xs:string" />
+		<xs:attribute name="port" type="xs:int" use="required" />
+		<xs:attribute name="serverPath" type="xs:string" />
+	</xs:complexType>
+	<xs:complexType name="apiRouterJaxb">
+		<xs:sequence />
+		<xs:attribute name="apiPath" type="xs:string" />
+		<xs:attribute name="config-ref" type="xs:string" />
+	</xs:complexType>
+	<xs:simpleType name="httpSERVERPROTOCOLS">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="HTTP" />
+			<xs:enumeration value="HTTPS" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

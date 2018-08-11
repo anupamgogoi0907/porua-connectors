@@ -1,0 +1,16 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:api="http://www.porua.org/apirouter"
+	xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       https://www.springframework.org/beans/spring-beans-4.0.xsd
+       http://www.porua.org/apirouter
+       http://www.porua.org/apirouter/apirouter.xsd">
+
+	<api:api-router apiPath="api.yaml"
+		config-ref="apiConfig" />
+
+	<api:router-config name="apiConfig" protocol="HTTP"
+		host="localhost" port="8080" serverPath="/app" />
+</beans>

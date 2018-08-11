@@ -1,0 +1,25 @@
+package com.porua.api.utility;
+
+public class RouterUtility {
+	public static String QUERY_PARAM_PREFIX = "query.param";
+	public static String HEADER_NAME_PREFIX = "header.param";
+
+	public static String sanitizePath(String path) throws Exception {
+		if (path != null && !"".equals(path)) {
+			path = path.replaceAll("//", "/");
+			if (!path.startsWith("/")) {
+				path = "/".concat(path);
+			}
+			return path;
+		} else {
+			return "/";
+		}
+	}
+
+	public static String resolvePath(String pathInConnector, String pathInConfig) throws Exception {
+		pathInConnector = sanitizePath(pathInConnector);
+		pathInConfig = sanitizePath(pathInConfig);
+		String path = pathInConfig.concat(pathInConnector);
+		return sanitizePath(path);
+	}
+}
