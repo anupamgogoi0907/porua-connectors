@@ -73,11 +73,11 @@ public class ApiGen {
 
 		// API class fields.
 		List<FieldSpec> listField = new ArrayList<>();
+		listField.add(FieldSpec.builder(Configuration.class, "config")
+				.addAnnotation(AnnotationSpec.builder(Context.class).build()).build());
 		listField.add(FieldSpec.builder(UriInfo.class, "uriInfo")
 				.addAnnotation(AnnotationSpec.builder(Context.class).build()).build());
 		listField.add(FieldSpec.builder(HttpHeaders.class, "headers")
-				.addAnnotation(AnnotationSpec.builder(Context.class).build()).build());
-		listField.add(FieldSpec.builder(Configuration.class, "config")
 				.addAnnotation(AnnotationSpec.builder(Context.class).build()).build());
 
 		TypeSpec className = TypeSpec.classBuilder("MyAPI").addModifiers(Modifier.PUBLIC).superclass(ContextMaker.class)
@@ -103,7 +103,7 @@ public class ApiGen {
 		msBuilder.addParameters(addMethodParams(op));
 
 		// Body.
-		msBuilder.addCode(CodeBlock.of("makeContext(config, uriInfo, headers, null, asyncResponse);"));
+		msBuilder.addCode(CodeBlock.of("makeContext(config, uriInfo, headers, payload, asyncResponse);"));
 		return msBuilder.addModifiers(Modifier.PUBLIC).build();
 	}
 
@@ -135,6 +135,7 @@ public class ApiGen {
 		}
 
 		// Required parameter.
+		listParam.add(ParameterSpec.builder(Object.class, "payload").build());
 		listParam.add(
 				ParameterSpec.builder(AsyncResponse.class, "asyncResponse").addAnnotation(Suspended.class).build());
 		return listParam;
