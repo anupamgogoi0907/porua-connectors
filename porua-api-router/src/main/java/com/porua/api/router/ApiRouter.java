@@ -41,6 +41,9 @@ public class ApiRouter extends MessageListener {
 	@Override
 	public void startListener(Flow flow) {
 		try {
+			// Context Maker
+			new ContextMaker(flow);
+
 			// Bean Config
 			configureSwagger();
 
