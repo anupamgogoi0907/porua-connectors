@@ -6,6 +6,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
+import javax.ws.rs.core.Configuration;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -17,6 +18,9 @@ import io.swagger.annotations.ApiOperation;
 @Path("/")
 @Api(value = "My Controller")
 public class MyResource {
+
+	@Context
+	Configuration config;
 
 	@Context
 	UriInfo uriInfo;

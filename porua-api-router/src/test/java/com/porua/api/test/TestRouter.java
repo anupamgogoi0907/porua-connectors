@@ -9,6 +9,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.porua.api.router.ApiRouter;
 import com.porua.api.router.RouterConfig;
+import com.porua.core.flow.Flow;
 
 public class TestRouter {
 
@@ -52,7 +53,7 @@ public class TestRouter {
 		router.setResources("com.porua.api.test");
 		router.setConfig(config);
 
-		router.startListener(null);
+		router.startListener(new Flow());
 		Thread.currentThread().join();
 	}
 

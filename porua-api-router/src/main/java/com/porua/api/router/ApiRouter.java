@@ -37,19 +37,17 @@ public class ApiRouter extends MessageListener {
 
 	private Logger logger = LogManager.getLogger(ApiRouter.class);
 	HttpServer server;
+	public static String FLOW_KEY = "flow";
 
 	@Override
 	public void startListener(Flow flow) {
 		try {
-			// Context Maker
-			new ContextMaker(flow);
-
 			// Bean Config
 			configureSwagger();
 
 			// Http Server
 			URI uri = createURI();
-			HttpServer server = GrizzlyHttpServerFactory.createHttpServer(createURI(), configureResource());
+			HttpServer server = GrizzlyHttpServerFactory.createHttpServer(createURI(), configureResource(flow));
 
 			// Swagger UI.
 			HttpHandler docsHandler = new CLStaticHttpHandler(this.getClass().getClassLoader(), "dist/");
@@ -82,9 +80,10 @@ public class ApiRouter extends MessageListener {
 	 * 
 	 * @return
 	 */
-	private ResourceConfig configureResource() {
+	private ResourceConfig configureResource(Flow flow) {
 		logger.debug("Configuring server resources...");
 		ResourceConfig resourceConfig = new ResourceConfig();
+		resourceConfig.property(FLOW_KEY, flow);
 		resourceConfig.packages(resources);
 		resourceConfig.register(io.swagger.jaxrs.listing.ApiListingResource.class);
 		resourceConfig.register(io.swagger.jaxrs.listing.SwaggerSerializers.class);
