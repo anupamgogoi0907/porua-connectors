@@ -14,10 +14,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
+import javax.ws.rs.core.Configuration;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.UriInfo;
 
+import com.porua.api.router.ContextMaker;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
@@ -75,9 +77,11 @@ public class ApiGen {
 				.addAnnotation(AnnotationSpec.builder(Context.class).build()).build());
 		listField.add(FieldSpec.builder(HttpHeaders.class, "headers")
 				.addAnnotation(AnnotationSpec.builder(Context.class).build()).build());
+		listField.add(FieldSpec.builder(Configuration.class, "config")
+				.addAnnotation(AnnotationSpec.builder(Context.class).build()).build());
 
-		TypeSpec className = TypeSpec.classBuilder("MyAPI").addModifiers(Modifier.PUBLIC).addAnnotations(listClassAnnot)
-				.addFields(listField).addMethods(listMethod).build();
+		TypeSpec className = TypeSpec.classBuilder("MyAPI").addModifiers(Modifier.PUBLIC).superclass(ContextMaker.class)
+				.addAnnotations(listClassAnnot).addFields(listField).addMethods(listMethod).build();
 		JavaFile javaFile = JavaFile.builder("anupam.generated", className).build();
 		javaFile.writeTo(new File(SRC_FILE));
 	}
@@ -95,7 +99,11 @@ public class ApiGen {
 		asBuilder.addMember("value", CodeBlock.of("$S", path));
 		msBuilder.addAnnotation(asBuilder.build());
 
+		// Method parameters.
 		msBuilder.addParameters(addMethodParams(op));
+
+		// Body.
+		msBuilder.addCode(CodeBlock.of("makeContext(config, uriInfo, headers, null, asyncResponse);"));
 		return msBuilder.addModifiers(Modifier.PUBLIC).build();
 	}
 
