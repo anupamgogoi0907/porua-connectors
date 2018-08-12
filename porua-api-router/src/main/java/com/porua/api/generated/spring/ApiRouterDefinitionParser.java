@@ -16,6 +16,10 @@ public class ApiRouterDefinitionParser extends PoruaBeanDefinitionParser {
 		builder.setScope(BeanDefinition.SCOPE_PROTOTYPE);
 		String apiPath = element.getAttribute("apiPath");
 		builder.addPropertyValue("apiPath", apiPath);
+		String consolePath = element.getAttribute("consolePath");
+		builder.addPropertyValue("consolePath", consolePath);
+		String resources = element.getAttribute("resources");
+		builder.addPropertyValue("resources", resources);
 		String configRef = element.getAttribute("config-ref");
 		RuntimeBeanReference configRefBean = new RuntimeBeanReference(configRef);
 		builder.addPropertyValue("config", configRefBean);

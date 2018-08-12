@@ -15,6 +15,16 @@ public class ApiRouterJaxb {
   private String apiPath;
 
   @XmlAttribute(
+      name = "consolePath"
+  )
+  private String consolePath;
+
+  @XmlAttribute(
+      name = "resources"
+  )
+  private String resources;
+
+  @XmlAttribute(
       name = "config-ref"
   )
   String configref;

@@ -15,6 +15,12 @@ public class ApiRouterPalette {
   @ConfigProperty
   String apiPath;
 
+  @ConfigProperty
+  String consolePath;
+
+  @ConfigProperty
+  String resources;
+
   @ConnectorConfig(
       configName = "config-ref",
       tagName = "router-config"

@@ -26,12 +26,17 @@ public class ApiRouter extends MessageListener {
 	@ConfigProperty
 	private String apiPath;
 
+	@ConfigProperty
+	private String consolePath;
+
+	@ConfigProperty
+	private String resources;
+
 	@ConnectorConfig(configName = "config-ref", tagName = "router-config")
 	private RouterConfig config;
 
 	private Logger logger = LogManager.getLogger(ApiRouter.class);
 	HttpServer server;
-	private String resources = "com.porua.api.test";
 
 	@Override
 	public void startListener(Flow flow) {
@@ -45,7 +50,7 @@ public class ApiRouter extends MessageListener {
 
 			// Swagger UI.
 			HttpHandler docsHandler = new CLStaticHttpHandler(this.getClass().getClassLoader(), "dist/");
-			server.getServerConfiguration().addHttpHandler(docsHandler, "/");
+			server.getServerConfiguration().addHttpHandler(docsHandler, consolePath);
 
 			server.start();
 			logger.info("Listening on: " + uri.toString());
@@ -64,7 +69,7 @@ public class ApiRouter extends MessageListener {
 		beanConfig.setVersion("1.0.0");
 		beanConfig.setSchemes(new String[] { "http" });
 		beanConfig.setHost(config.getHost() + ":" + config.getPort());
-		beanConfig.setBasePath("/app/");
+		beanConfig.setBasePath(config.getServerPath());
 		beanConfig.setResourcePackage(resources);
 		beanConfig.setScan(true);
 	}
@@ -113,6 +118,22 @@ public class ApiRouter extends MessageListener {
 
 	public void setApiPath(String apiPath) {
 		this.apiPath = apiPath;
+	}
+
+	public String getConsolePath() {
+		return consolePath;
+	}
+
+	public void setConsolePath(String consolePath) {
+		this.consolePath = consolePath;
+	}
+
+	public String getResources() {
+		return resources;
+	}
+
+	public void setResources(String resources) {
+		this.resources = resources;
 	}
 
 	public RouterConfig getConfig() {

@@ -16,6 +16,8 @@
 	<xs:complexType name="apiRouterJaxb">
 		<xs:sequence />
 		<xs:attribute name="apiPath" type="xs:string" />
+		<xs:attribute name="consolePath" type="xs:string" />
+		<xs:attribute name="resources" type="xs:string" />
 		<xs:attribute name="config-ref" type="xs:string" />
 	</xs:complexType>
 	<xs:simpleType name="httpSERVERPROTOCOLS">

@@ -36,7 +36,7 @@ public class TestRouter {
 		ctx.close();
 	}
 
-	@Test
+	// @Test
 	public void test() throws Exception {
 		// ApiGen.generateApiClass("api.yaml");
 
@@ -47,6 +47,9 @@ public class TestRouter {
 		config.setServerPath("/test");
 
 		ApiRouter router = new ApiRouter();
+		router.setApiPath("api.yaml");
+		router.setConsolePath("/console");
+		router.setResources("com.porua.api.test");
 		router.setConfig(config);
 
 		router.startListener(null);
