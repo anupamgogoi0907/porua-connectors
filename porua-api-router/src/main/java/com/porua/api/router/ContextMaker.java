@@ -26,6 +26,7 @@ public class ContextMaker {
 		Flow flow = (Flow) config.getProperties().get(ApiRouter.FLOW_KEY);
 		PoruaContext context = new PoruaContext(flow.getProcessors());
 		context.setResponder(asyncResponse);
+		context.setPayload(payload == null ? "" : payload);
 
 		// Start the processor chain.
 		MessageProcessor p = context.getProcessors().remove();
