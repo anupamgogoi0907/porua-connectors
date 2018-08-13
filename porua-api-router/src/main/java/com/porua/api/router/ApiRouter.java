@@ -47,8 +47,8 @@ public class ApiRouter extends MessageListener {
 			configureSwagger();
 
 			// Http Server
-			URI uri = createURI();
-			HttpServer server = GrizzlyHttpServerFactory.createHttpServer(createURI(), configureResource(flow));
+			URI uri = createURI(config.getServerPath());
+			HttpServer server = GrizzlyHttpServerFactory.createHttpServer(uri, configureResource(flow));
 
 			// Swagger UI.
 			HttpHandler docsHandler = new CLStaticHttpHandler(this.getClass().getClassLoader(), "dist/");
@@ -56,6 +56,8 @@ public class ApiRouter extends MessageListener {
 
 			server.start();
 			logger.info("Listening on: " + uri.toString());
+			logger.info("Swagger JSON: " + uri.toString().concat("/swagger.json"));
+			logger.info("Swagger Console: " + createURI(consolePath).toString().concat("/index.html"));
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
@@ -99,8 +101,8 @@ public class ApiRouter extends MessageListener {
 	 * @return
 	 * @throws Exception
 	 */
-	private URI createURI() throws Exception {
-		String serverPath = RouterUtility.sanitizePath(config.getServerPath());
+	private URI createURI(String path) throws Exception {
+		String serverPath = RouterUtility.sanitizePath(path);
 		String uri = "";
 		if ("http".equalsIgnoreCase(config.getProtocol())) {
 			uri = "http://".concat(config.getHost()).concat(":").concat(config.getPort() + "").concat(serverPath);
