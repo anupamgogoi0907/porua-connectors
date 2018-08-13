@@ -16,8 +16,9 @@ import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Configuration;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.UriInfo;
+
+import org.glassfish.jersey.server.ContainerRequest;
 
 import com.porua.api.router.ContextMaker;
 import com.squareup.javapoet.AnnotationSpec;
@@ -77,12 +78,12 @@ public class ApiGen {
 				.addAnnotation(AnnotationSpec.builder(Context.class).build()).build());
 		listField.add(FieldSpec.builder(UriInfo.class, "uriInfo")
 				.addAnnotation(AnnotationSpec.builder(Context.class).build()).build());
-		listField.add(FieldSpec.builder(HttpHeaders.class, "headers")
+		listField.add(FieldSpec.builder(ContainerRequest.class, "request")
 				.addAnnotation(AnnotationSpec.builder(Context.class).build()).build());
 
 		TypeSpec className = TypeSpec.classBuilder("MyAPI").addModifiers(Modifier.PUBLIC).superclass(ContextMaker.class)
 				.addAnnotations(listClassAnnot).addFields(listField).addMethods(listMethod).build();
-		JavaFile javaFile = JavaFile.builder("anupam.generated", className).build();
+		JavaFile javaFile = JavaFile.builder("api.generated", className).build();
 		javaFile.writeTo(new File(srcPath));
 	}
 
@@ -103,7 +104,7 @@ public class ApiGen {
 		msBuilder.addParameters(addMethodParams(op));
 
 		// Body.
-		msBuilder.addCode(CodeBlock.of("makeContext(config, uriInfo, headers, payload, asyncResponse);"));
+		msBuilder.addCode(CodeBlock.of("makeContext(config, uriInfo, request, payload, asyncResponse);"));
 		return msBuilder.addModifiers(Modifier.PUBLIC).build();
 	}
 

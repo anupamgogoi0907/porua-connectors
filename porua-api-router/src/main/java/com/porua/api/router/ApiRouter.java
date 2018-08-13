@@ -37,7 +37,8 @@ public class ApiRouter extends MessageListener {
 
 	private Logger logger = LogManager.getLogger(ApiRouter.class);
 	HttpServer server;
-	public static String FLOW_KEY = "flow";
+	public static String KEY_KEY = "flow";
+	public static String KEY_SPRING_CONTEXT = "springContext";
 
 	@Override
 	public void startListener(Flow flow) {
@@ -83,7 +84,8 @@ public class ApiRouter extends MessageListener {
 	private ResourceConfig configureResource(Flow flow) {
 		logger.debug("Configuring server resources...");
 		ResourceConfig resourceConfig = new ResourceConfig();
-		resourceConfig.property(FLOW_KEY, flow);
+		resourceConfig.property(KEY_KEY, flow);
+		resourceConfig.property(KEY_SPRING_CONTEXT, super.applicationContext);
 		resourceConfig.packages(resources);
 		resourceConfig.register(io.swagger.jaxrs.listing.ApiListingResource.class);
 		resourceConfig.register(io.swagger.jaxrs.listing.SwaggerSerializers.class);
