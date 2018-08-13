@@ -86,6 +86,27 @@
 						<target>1.8</target>
 					</configuration>
 				</plugin>
+				<!-- mvn clean install assembly:single -->
+				<plugin>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>3.1.0</version>
+					<configuration>
+						<descriptorRefs>
+							<descriptorRef>jar-with-dependencies</descriptorRef>
+						</descriptorRefs>
+						<finalName>${project.artifactId}-${project.version}</finalName>
+						<appendAssemblyId>false</appendAssemblyId>
+					</configuration>
+					<executions>
+						<execution>
+							<id>make-assembly</id>
+							<phase>package</phase>
+							<goals>
+								<goal>single</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 				<plugin>
 					<groupId>com.porua</groupId>
 					<artifactId>codegen-maven-plugin</artifactId>
