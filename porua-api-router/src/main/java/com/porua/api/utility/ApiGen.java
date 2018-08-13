@@ -38,10 +38,10 @@ public class ApiGen {
 	private static String SRC_FILE = "src/main/java";
 
 	public static void main(String[] args) throws Exception {
-		generateApiClass("api.yaml");
+		generateApiClass("api.yaml", SRC_FILE);
 	}
 
-	public static void generateApiClass(String apiPath) throws Exception {
+	public static void generateApiClass(String apiPath, String srcPath) throws Exception {
 		List<MethodSpec> listMethod = new ArrayList<>();
 		Swagger api = new SwaggerParser().read(apiPath);
 
@@ -83,7 +83,7 @@ public class ApiGen {
 		TypeSpec className = TypeSpec.classBuilder("MyAPI").addModifiers(Modifier.PUBLIC).superclass(ContextMaker.class)
 				.addAnnotations(listClassAnnot).addFields(listField).addMethods(listMethod).build();
 		JavaFile javaFile = JavaFile.builder("anupam.generated", className).build();
-		javaFile.writeTo(new File(SRC_FILE));
+		javaFile.writeTo(new File(srcPath));
 	}
 
 	static MethodSpec addMethod(String path, String operationName, Class<?> type, Operation op) {
