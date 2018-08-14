@@ -33,7 +33,10 @@ import com.squareup.javapoet.TypeSpec;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import io.swagger.models.Operation;
+import io.swagger.models.Response;
 import io.swagger.models.Swagger;
 import io.swagger.parser.SwaggerParser;
 
@@ -122,6 +125,24 @@ public class ApiGen {
 		msBuilder.addAnnotation(
 				AnnotationSpec.builder(ApiOperation.class).addMember("value", CodeBlock.of("$S", methodName)).build());
 
+		// APIResponses.
+		if (op.getResponses() != null) {
+			System.out.println("");
+			asBuilder = AnnotationSpec.builder(ApiResponses.class);
+
+			List<AnnotationSpec> listInner = new ArrayList<>();
+			op.getResponses().keySet().stream().forEach(key -> {
+				Response res = op.getResponses().get(key);
+				AnnotationSpec.Builder asBuilderInner = AnnotationSpec.builder(ApiResponse.class);
+				asBuilderInner.addMember("code", CodeBlock.of("$L", Integer.parseInt(key)));
+				asBuilderInner.addMember("message", CodeBlock.of("$S", res.getDescription()));
+				listInner.add(asBuilderInner.build());
+			});
+
+			asBuilder.addMember("value", CodeBlock.of(makeString(listInner)));
+			msBuilder.addAnnotation(asBuilder.build());
+		}
+
 		// Method parameters.
 		msBuilder.addParameters(addMethodParams(op));
 
@@ -164,12 +185,19 @@ public class ApiGen {
 		return listParam;
 	}
 
-	static String makeString(List<String> list) {
+	static String makeString(List<?> list) {
 		StringBuilder sb = new StringBuilder("{");
-		list.forEach((s) -> {
-			sb.append("\"").append(s).append("\"").append(",");
-		});
+		if (list.get(0) instanceof String) {
+			list.forEach((s) -> {
+				sb.append("\"").append(s).append("\"").append(",");
+			});
+		} else if (list.get(0) instanceof AnnotationSpec) {
+			list.forEach(as -> {
+				sb.append(as.toString()).append(",");
+			});
+		}
 		String str = sb.toString().substring(0, sb.length() - 1).concat("}");
 		return str;
 	}
+
 }
