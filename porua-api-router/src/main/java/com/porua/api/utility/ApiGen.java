@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.lang.model.element.Modifier;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
@@ -30,6 +32,7 @@ import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeSpec;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.models.Operation;
 import io.swagger.models.Swagger;
 import io.swagger.parser.SwaggerParser;
@@ -88,7 +91,8 @@ public class ApiGen {
 	}
 
 	static MethodSpec addMethod(String path, String operationName, Class<?> type, Operation op) {
-		MethodSpec.Builder msBuilder = MethodSpec.methodBuilder(operationName.concat(path.replaceAll("/", "")));
+		String methodName = operationName.concat(path.replaceAll("/", ""));
+		MethodSpec.Builder msBuilder = MethodSpec.methodBuilder(methodName);
 
 		// Operation annotation.
 		AnnotationSpec.Builder asBuilder = null;
@@ -99,6 +103,24 @@ public class ApiGen {
 		asBuilder = AnnotationSpec.builder(Path.class);
 		asBuilder.addMember("value", CodeBlock.of("$S", path));
 		msBuilder.addAnnotation(asBuilder.build());
+
+		// Produces annotation.
+		if (op.getProduces() != null) {
+			String produeces = makeString(op.getProduces());
+			msBuilder.addAnnotation(
+					AnnotationSpec.builder(Produces.class).addMember("value", CodeBlock.of(produeces)).build());
+		}
+
+		// Consumes annotation.
+		if (op.getConsumes() != null) {
+			String consumes = makeString(op.getConsumes());
+			msBuilder.addAnnotation(
+					AnnotationSpec.builder(Consumes.class).addMember("value", CodeBlock.of(consumes)).build());
+		}
+
+		// APIOperation.
+		msBuilder.addAnnotation(
+				AnnotationSpec.builder(ApiOperation.class).addMember("value", CodeBlock.of("$S", methodName)).build());
 
 		// Method parameters.
 		msBuilder.addParameters(addMethodParams(op));
@@ -142,4 +164,12 @@ public class ApiGen {
 		return listParam;
 	}
 
+	static String makeString(List<String> list) {
+		StringBuilder sb = new StringBuilder("{");
+		list.forEach((s) -> {
+			sb.append("\"").append(s).append("\"").append(",");
+		});
+		String str = sb.toString().substring(0, sb.length() - 1).concat("}");
+		return str;
+	}
 }

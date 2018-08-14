@@ -19,6 +19,17 @@ tags:
   description: Operations available to regular developers
 
 paths:
+  /users:
+    get:
+      summary: Get all users.
+      description: Get all users
+      produces: 
+      - application/json
+      - application/xml
+      responses:
+        200:
+          description: OK
+    
   /inventory:
     get:
       tags:
