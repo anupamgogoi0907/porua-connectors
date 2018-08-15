@@ -9,8 +9,7 @@
        http://www.porua.org/apirouter/apirouter.xsd">
 
 	<api:api-router apiPath="api.yaml"
-		consolePath="/console" resources="com.porua.api.test"
-		config-ref="apiConfig" />
+		consolePath="/console" config-ref="apiConfig" />
 
 	<api:router-config name="apiConfig" protocol="HTTP"
 		host="localhost" port="8080" serverPath="/app" />
