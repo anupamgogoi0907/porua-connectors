@@ -10,6 +10,7 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
+import com.porua.api.utility.ApiGen;
 import com.porua.api.utility.CorsHandler;
 import com.porua.api.utility.RouterUtility;
 import com.porua.core.flow.Flow;
@@ -28,9 +29,6 @@ public class ApiRouter extends MessageListener {
 
 	@ConfigProperty
 	private String consolePath;
-
-	@ConfigProperty
-	private String resources;
 
 	@ConnectorConfig(configName = "config-ref", tagName = "router-config")
 	private RouterConfig config;
@@ -74,7 +72,7 @@ public class ApiRouter extends MessageListener {
 		beanConfig.setSchemes(new String[] { "http" });
 		beanConfig.setHost(config.getHost() + ":" + config.getPort());
 		beanConfig.setBasePath(config.getServerPath());
-		beanConfig.setResourcePackage(resources);
+		beanConfig.setResourcePackage(ApiGen.RESOURCE_PACKAGE);
 		beanConfig.setScan(true);
 	}
 
@@ -88,7 +86,7 @@ public class ApiRouter extends MessageListener {
 		ResourceConfig resourceConfig = new ResourceConfig();
 		resourceConfig.property(KEY_KEY, flow);
 		resourceConfig.property(KEY_SPRING_CONTEXT, super.applicationContext);
-		resourceConfig.packages(resources);
+		resourceConfig.packages(ApiGen.RESOURCE_PACKAGE);
 		resourceConfig.register(io.swagger.jaxrs.listing.ApiListingResource.class);
 		resourceConfig.register(io.swagger.jaxrs.listing.SwaggerSerializers.class);
 		resourceConfig.register(CorsHandler.class);
@@ -132,14 +130,6 @@ public class ApiRouter extends MessageListener {
 
 	public void setConsolePath(String consolePath) {
 		this.consolePath = consolePath;
-	}
-
-	public String getResources() {
-		return resources;
-	}
-
-	public void setResources(String resources) {
-		this.resources = resources;
 	}
 
 	public RouterConfig getConfig() {

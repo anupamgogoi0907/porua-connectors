@@ -43,6 +43,7 @@ import io.swagger.parser.SwaggerParser;
 public class ApiGen {
 
 	private static String SRC_FILE = "src/main/java";
+	public static String RESOURCE_PACKAGE = "api.generated";
 
 	public static void main(String[] args) throws Exception {
 		generateApiClass("api.yaml", SRC_FILE);
@@ -89,7 +90,7 @@ public class ApiGen {
 
 		TypeSpec className = TypeSpec.classBuilder("MyAPI").addModifiers(Modifier.PUBLIC).superclass(ContextMaker.class)
 				.addAnnotations(listClassAnnot).addFields(listField).addMethods(listMethod).build();
-		JavaFile javaFile = JavaFile.builder("api.generated", className).build();
+		JavaFile javaFile = JavaFile.builder(RESOURCE_PACKAGE, className).build();
 		javaFile.writeTo(new File(srcPath));
 	}
 

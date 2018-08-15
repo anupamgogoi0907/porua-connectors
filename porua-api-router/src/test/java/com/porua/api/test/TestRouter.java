@@ -50,7 +50,6 @@ public class TestRouter {
 		ApiRouter router = new ApiRouter();
 		router.setApiPath("api.yaml");
 		router.setConsolePath("/console");
-		router.setResources("com.porua.api.test");
 		router.setConfig(config);
 
 		router.startListener(new Flow());
