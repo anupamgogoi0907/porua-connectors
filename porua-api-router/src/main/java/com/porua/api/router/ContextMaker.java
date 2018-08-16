@@ -33,7 +33,7 @@ public class ContextMaker {
 		// Start the processor chain.
 		MessageProcessor p = context.getProcessors().remove();
 		if (p instanceof PoruaSwitch) {
-			context.getMapVariable().put("path", request.getMethod() + ":" + uriInfo.getPath());
+			context.getMapVariable().put("path", request.getMethod() + ":/" + uriInfo.getPath());
 		}
 		p.process();
 	}
