@@ -121,4 +121,10 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+	<distributionManagement>
+		<repository>
+			<id>internal</id>
+			<url>file:///home/agogoi/Desktop/artifacts/</url>
+		</repository>
+	</distributionManagement>
 </project>
