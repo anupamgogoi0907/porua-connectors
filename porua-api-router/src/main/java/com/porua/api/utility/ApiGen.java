@@ -77,7 +77,11 @@ public class ApiGen {
 		List<AnnotationSpec> listClassAnnot = new ArrayList<>();
 		listClassAnnot.add(AnnotationSpec.builder(Path.class)
 				.addMember("value", CodeBlock.of("$S", api.getBasePath() == null ? "/" : api.getBasePath())).build());
-		listClassAnnot.add(AnnotationSpec.builder(Api.class).addMember("value", CodeBlock.of("$S", "Test")).build());
+		listClassAnnot
+				.add(AnnotationSpec.builder(Api.class)
+						.addMember("value",
+								CodeBlock.of("$S", api.getInfo().getTitle() == null ? "" : api.getInfo().getTitle()))
+						.build());
 
 		// API class fields.
 		List<FieldSpec> listField = new ArrayList<>();
@@ -145,14 +149,18 @@ public class ApiGen {
 		}
 
 		// Method parameters.
-		msBuilder.addParameters(addMethodParams(op));
+		msBuilder.addParameters(addMethodParams(operationName, op));
 
 		// Body.
-		msBuilder.addCode(CodeBlock.of("makeContext(config, uriInfo, request, payload, asyncResponse);"));
+		if ("get".equalsIgnoreCase(operationName)) {
+			msBuilder.addCode(CodeBlock.of("makeContext(config, uriInfo, request, null, asyncResponse);"));
+		} else {
+			msBuilder.addCode(CodeBlock.of("makeContext(config, uriInfo, request, payload, asyncResponse);"));
+		}
 		return msBuilder.addModifiers(Modifier.PUBLIC).build();
 	}
 
-	static List<ParameterSpec> addMethodParams(Operation op) {
+	static List<ParameterSpec> addMethodParams(String operationName, Operation op) {
 		List<ParameterSpec> listParam = new ArrayList<>();
 
 		if (op.getParameters() != null) {
@@ -179,8 +187,11 @@ public class ApiGen {
 			});
 		}
 
+		// Payload.
+		if (!"get".equalsIgnoreCase(operationName)) {
+			listParam.add(ParameterSpec.builder(Object.class, "payload").build());
+		}
 		// Required parameter.
-		listParam.add(ParameterSpec.builder(Object.class, "payload").build());
 		listParam.add(
 				ParameterSpec.builder(AsyncResponse.class, "asyncResponse").addAnnotation(Suspended.class).build());
 		return listParam;
