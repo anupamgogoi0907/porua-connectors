@@ -1,5 +1,8 @@
 package com.porua.db.component;
 
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -51,10 +54,13 @@ public class PoruaDatabaseConnector extends MessageProcessor {
 			if (!super.springContext.containsBean("poruaDataSource")) {
 				addDatasourceToSpringContext();
 			}
-			dataSource = super.springContext.getBean(PoruaDataSource.class);
-			conn = dataSource.getConnection();
+			if (query.endsWith(".sql")) {
+				query = readSqlFile(query);
+			}
 			query = evaluateQuery(query);
 
+			dataSource = super.springContext.getBean(PoruaDataSource.class);
+			conn = dataSource.getConnection();
 			if ("SELECT".equalsIgnoreCase(this.operation)) {
 				Statement st = conn.createStatement();
 				ResultSet rs = st.executeQuery(query);
@@ -64,7 +70,6 @@ public class PoruaDatabaseConnector extends MessageProcessor {
 				PreparedStatement pst = conn.prepareStatement(query);
 				pst.executeUpdate();
 			}
-
 			logger.info("Query processed: " + query);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -75,6 +80,26 @@ public class PoruaDatabaseConnector extends MessageProcessor {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+		}
+
+	}
+
+	/**
+	 * Read sql file.
+	 * 
+	 * @param fileName
+	 * @return
+	 */
+	String readSqlFile(String fileName) {
+		try {
+			logger.debug("Reading query from: " + fileName);
+			PoruaClassLoader loader = super.springContext.getBean(PoruaClassLoader.class);
+			URL url = loader.getResource(fileName);
+			String sql = new String(Files.readAllBytes(Paths.get(url.toURI())));
+			return sql;
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return null;
 		}
 
 	}
