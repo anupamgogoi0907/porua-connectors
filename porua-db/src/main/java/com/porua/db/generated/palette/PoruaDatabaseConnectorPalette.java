@@ -15,9 +15,22 @@ public class PoruaDatabaseConnectorPalette {
   @ConfigProperty
   String query;
 
+  @ConfigProperty(
+      enumClass = OPERATIONS.class
+  )
+  private String operation;
+
   @ConnectorConfig(
       configName = "config-ref",
       tagName = "db-config"
   )
   PoruaDatabaseConfigurationPalette config;
+
+  enum OPERATIONS {
+    SELECT,
+
+    INSERT,
+
+    UPDATE
+  }
 }
