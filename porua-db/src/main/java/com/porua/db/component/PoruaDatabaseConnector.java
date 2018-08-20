@@ -71,14 +71,16 @@ public class PoruaDatabaseConnector extends MessageProcessor {
 				pst.executeUpdate();
 			}
 			logger.info("Query processed: " + query);
+			super.process();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
+			PoruaUtility.onError(poruaContext, e.getMessage());
 		} finally {
 			try {
 				conn.close();
-				super.process();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.error(e.getMessage());
+				PoruaUtility.onError(poruaContext, e.getMessage());
 			}
 		}
 
@@ -99,6 +101,7 @@ public class PoruaDatabaseConnector extends MessageProcessor {
 			return sql;
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			PoruaUtility.onError(poruaContext, e.getMessage());
 			return null;
 		}
 
@@ -121,6 +124,7 @@ public class PoruaDatabaseConnector extends MessageProcessor {
 					row.put(md.getColumnName(i), rs.getObject(i));
 				} catch (SQLException e) {
 					logger.error(e.getMessage());
+					PoruaUtility.onError(poruaContext, e.getMessage());
 				}
 			});
 			listRow.add(row);
@@ -165,18 +169,20 @@ public class PoruaDatabaseConnector extends MessageProcessor {
 				int iNext = 0;
 				// Extract the substring untill a space occurs.
 				for (iNext = iCur; iNext < query.length(); iNext++) {
-					strExp.append(query.charAt(iNext));
-					if (Character.isWhitespace(query.charAt(iNext)) || (iNext + 1) == query.length()) {
-						try {
+					try {
+						if (Character.isWhitespace(query.charAt(iNext)) || query.charAt(iNext) == ',') {
 							Object value = evaluator.parseValueExpression(strExp.toString().trim(), poruaContext);
 							mapExpValue.put(strExp.toString().trim(), value);
 							strExp = new StringBuilder();
 							break;
-						} catch (Exception e) {
-							logger.error(e.getMessage());
+						} else {
+							strExp.append(query.charAt(iNext));
 						}
-
+					} catch (Exception e) {
+						logger.error(e.getMessage());
+						PoruaUtility.onError(poruaContext, e.getMessage());
 					}
+
 				}
 				iCur = query.indexOf(key, iNext);
 			}
