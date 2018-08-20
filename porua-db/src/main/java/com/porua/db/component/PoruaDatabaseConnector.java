@@ -1,6 +1,7 @@
 package com.porua.db.component;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -60,7 +61,8 @@ public class PoruaDatabaseConnector extends MessageProcessor {
 				List<Map<String, Object>> listRow = resultToMap(rs);
 				super.poruaContext.setPayload(listRow);
 			} else if ("INSERT".equalsIgnoreCase(this.operation) || "UPDATE".equalsIgnoreCase(this.operation)) {
-				// TODO
+				PreparedStatement pst = conn.prepareStatement(query);
+				pst.executeUpdate();
 			}
 
 			logger.info("Query processed: " + query);
