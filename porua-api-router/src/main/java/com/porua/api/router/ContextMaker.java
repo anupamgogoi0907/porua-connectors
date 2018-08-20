@@ -1,7 +1,9 @@
 package com.porua.api.router;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.core.Configuration;
@@ -29,6 +31,7 @@ public class ContextMaker {
 		PoruaContext context = new PoruaContext(flow.getProcessors());
 		context.setResponder(asyncResponse);
 		context.setPayload(payload == null ? "" : payload);
+		context.setMapParameter(extractParameters(uriInfo));
 
 		// Start the processor chain.
 		MessageProcessor p = context.getProcessors().remove();
@@ -39,12 +42,24 @@ public class ContextMaker {
 	}
 
 	Map<String, Object> extractHeaders(HttpHeaders headers) {
+		logger.debug("Extracting headers...");
 		Map<String, Object> mapHeader = new HashMap<>();
 		MultivaluedMap<String, String> map = headers.getRequestHeaders();
 		map.forEach((key, values) -> {
 			mapHeader.put(key, values);
 		});
 		return mapHeader;
+	}
+
+	Map<String, Object> extractParameters(UriInfo uriInfo) {
+		logger.debug("Extracting query params...");
+		Map<String, Object> mapParameter = new HashMap<>();
+		uriInfo.getQueryParameters().keySet().forEach((param) -> {
+			List<String> listValue = uriInfo.getQueryParameters().get(param);
+			String value = listValue.stream().map(Object::toString).collect(Collectors.joining(","));
+			mapParameter.put(param, value);
+		});
+		return mapParameter;
 	}
 
 }
