@@ -2,6 +2,7 @@ package com.porua.component.json;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.porua.core.processor.MessageProcessor;
@@ -33,6 +34,7 @@ public class JavaToJson extends MessageProcessor {
 
 	void addObjectMapperToSpringContext() {
 		logger.debug("Adding ObjectMapper to Spring Context...");
-		PoruaUtility.addBeanToSpringContext("objectMapper", ObjectMapper.class, null);
+		PoruaUtility.addBeanToSpringContext("objectMapper", ObjectMapper.class,
+				(FileSystemXmlApplicationContext) super.springContext, new Object[] {});
 	}
 }
