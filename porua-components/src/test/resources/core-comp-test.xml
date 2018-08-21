@@ -28,4 +28,7 @@
 
 	<!-- Java Component -->
 	<comp:java-component />
+	
+	<!-- Java To JSON -->
+	<comp:java-to-json />
 </beans>

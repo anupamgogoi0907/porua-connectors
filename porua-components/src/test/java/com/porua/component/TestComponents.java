@@ -9,6 +9,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.porua.component.file.PoruaFileConnector;
 import com.porua.component.java.JavaComponent;
+import com.porua.component.json.JavaToJson;
 import com.porua.component.json.JsonToJava;
 import com.porua.component.json.JsonToXml;
 import com.porua.component.logger.PoruaLogger;
@@ -69,6 +70,12 @@ public class TestComponents {
 	public void testJavaComp() throws Exception {
 		JavaComponent jc = ctx.getBean(JavaComponent.class);
 		assertNotNull(jc);
+	}
+
+	@Test
+	public void testJavaToJson() throws Exception {
+		JavaToJson javaToJson = ctx.getBean(JavaToJson.class);
+		assertNotNull(javaToJson);
 	}
 
 	@AfterClass

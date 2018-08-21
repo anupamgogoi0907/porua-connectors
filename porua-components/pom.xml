@@ -7,6 +7,12 @@
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
+	<properties>
+		<commons-io.version>2.6</commons-io.version>
+		<dom4j.bversion>2.1.0</dom4j.bversion>
+		<json.version>20180130</json.version>
+		<jackson-databind.version>2.9.4</jackson-databind.version>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>com.porua</groupId>
@@ -17,23 +23,23 @@
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>2.6</version>
+			<version>${commons-io.version}</version>
 		</dependency>
 		<!-- JSON related -->
 		<dependency>
 			<groupId>org.dom4j</groupId>
 			<artifactId>dom4j</artifactId>
-			<version>2.1.0</version>
+			<version>${dom4j.bversion}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
-			<version>20180130</version>
+			<version>${json.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.9.4</version>
+			<version>${jackson-databind.version}</version>
 		</dependency>
 		<!-- Test -->
 		<dependency>
@@ -95,6 +101,7 @@
 							<param>com.porua.component.payload.PayloadSetter</param>
 							<param>com.porua.component.variable.VariableSetter</param>
 							<param>com.porua.component.logger.PoruaLogger</param>
+							<param>com.porua.component.json.JavaToJson</param>
 						</connectors>
 					</configuration>
 				</plugin>

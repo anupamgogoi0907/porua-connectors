@@ -11,5 +11,7 @@ public class NamespaceHandler extends NamespaceHandlerSupport {
 		registerBeanDefinitionParser("set-payload", new PayloadSetterDefinitionParser());
 		registerBeanDefinitionParser("set-variable", new VariableSetterDefinitionParser());
 		registerBeanDefinitionParser("porua-logger", new PoruaLoggerDefinitionParser());
+		registerBeanDefinitionParser("java-to-json", new JavaToJsonDefinitionParser());
+		;
 	}
 }
