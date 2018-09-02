@@ -4,6 +4,8 @@
 	targetNamespace="http://www.porua.org/components" version="1.0">
 	<xs:element name="file-connector"
 		type="tns:poruaFileConnectorJaxb" />
+	<xs:element name="file-poller"
+		type="tns:poruaFilePollerJaxb" />
 	<xs:element name="java-component"
 		type="tns:javaComponentJaxb" />
 	<xs:element name="java-to-json" type="tns:javaToJsonJaxb" />
@@ -28,6 +30,13 @@
 	<xs:complexType name="javaToJsonJaxb">
 		<xs:sequence />
 	</xs:complexType>
+	<xs:complexType name="poruaFilePollerJaxb">
+		<xs:sequence />
+		<xs:attribute name="operation"
+			type="tns:filePOLLOPERATIONS" />
+		<xs:attribute name="directory" type="xs:string" />
+		<xs:attribute name="timeout" type="xs:long" />
+	</xs:complexType>
 	<xs:complexType name="variableSetterJaxb">
 		<xs:sequence />
 		<xs:attribute name="name" type="xs:string" />
@@ -48,6 +57,14 @@
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="READ" />
 			<xs:enumeration value="WRITE" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="filePOLLOPERATIONS">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CREATE" />
+			<xs:enumeration value="MODIFY" />
+			<xs:enumeration value="DELETE" />
+			<xs:enumeration value="ALL" />
 		</xs:restriction>
 	</xs:simpleType>
 </xs:schema>

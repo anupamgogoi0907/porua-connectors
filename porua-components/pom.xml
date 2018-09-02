@@ -102,6 +102,7 @@
 							<param>com.porua.component.variable.VariableSetter</param>
 							<param>com.porua.component.logger.PoruaLogger</param>
 							<param>com.porua.component.json.JavaToJson</param>
+							<param>com.porua.component.file.PoruaFilePoller</param>
 						</connectors>
 					</configuration>
 				</plugin>

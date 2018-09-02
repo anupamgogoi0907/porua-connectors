@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.porua.component.file.PoruaFileConnector;
+import com.porua.component.file.PoruaFilePoller;
 import com.porua.component.java.JavaComponent;
 import com.porua.component.json.JavaToJson;
 import com.porua.component.json.JsonToJava;
@@ -76,6 +77,12 @@ public class TestComponents {
 	public void testJavaToJson() throws Exception {
 		JavaToJson javaToJson = ctx.getBean(JavaToJson.class);
 		assertNotNull(javaToJson);
+	}
+
+	@Test
+	public void testFilePoller() throws Exception {
+		PoruaFilePoller poller = ctx.getBean(PoruaFilePoller.class);
+		assertNotNull(poller);
 	}
 
 	@AfterClass

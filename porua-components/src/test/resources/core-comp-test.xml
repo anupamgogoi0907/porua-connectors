@@ -31,4 +31,7 @@
 	
 	<!-- Java To JSON -->
 	<comp:java-to-json />
+	
+	<!-- File Poller -->
+	<comp:file-poller operation="CREATE" timeout="0" directory="test" />
 </beans>
